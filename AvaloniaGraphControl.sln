@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26124.0
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "automatic-graph-layout", "automatic-graph-layout", "{3879F8E4-B49F-4C42-A738-363BBC82E32B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GraphLayout", "GraphLayout", "{0F2E8EEE-2F17-4231-862C-FE0116C4F473}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSAGL.NETCore", "MSAGL.NETCore", "{C864B4EE-36A7-45B1-AC2A-2DB9BFFCCE68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSAGL.NETCore", "automatic-graph-layout\GraphLayout\MSAGL.NETCore\MSAGL\MSAGL.NETCore.csproj", "{3FC1F3D4-3F1D-4348-9D98-410BB80E2F4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSAGL.NETCore.Drawing", "automatic-graph-layout\GraphLayout\MSAGL.NETCore\Drawing\MSAGL.NETCore.Drawing.csproj", "{008ABC3B-7659-4DE3-9993-F94F3229FE87}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3FC1F3D4-3F1D-4348-9D98-410BB80E2F4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FC1F3D4-3F1D-4348-9D98-410BB80E2F4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FC1F3D4-3F1D-4348-9D98-410BB80E2F4F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3FC1F3D4-3F1D-4348-9D98-410BB80E2F4F}.Debug|x64.Build.0 = Debug|Any CPU
+		{3FC1F3D4-3F1D-4348-9D98-410BB80E2F4F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3FC1F3D4-3F1D-4348-9D98-410BB80E2F4F}.Debug|x86.Build.0 = Debug|Any CPU
+		{3FC1F3D4-3F1D-4348-9D98-410BB80E2F4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FC1F3D4-3F1D-4348-9D98-410BB80E2F4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FC1F3D4-3F1D-4348-9D98-410BB80E2F4F}.Release|x64.ActiveCfg = Release|Any CPU
+		{3FC1F3D4-3F1D-4348-9D98-410BB80E2F4F}.Release|x64.Build.0 = Release|Any CPU
+		{3FC1F3D4-3F1D-4348-9D98-410BB80E2F4F}.Release|x86.ActiveCfg = Release|Any CPU
+		{3FC1F3D4-3F1D-4348-9D98-410BB80E2F4F}.Release|x86.Build.0 = Release|Any CPU
+		{008ABC3B-7659-4DE3-9993-F94F3229FE87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{008ABC3B-7659-4DE3-9993-F94F3229FE87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{008ABC3B-7659-4DE3-9993-F94F3229FE87}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{008ABC3B-7659-4DE3-9993-F94F3229FE87}.Debug|x64.Build.0 = Debug|Any CPU
+		{008ABC3B-7659-4DE3-9993-F94F3229FE87}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{008ABC3B-7659-4DE3-9993-F94F3229FE87}.Debug|x86.Build.0 = Debug|Any CPU
+		{008ABC3B-7659-4DE3-9993-F94F3229FE87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{008ABC3B-7659-4DE3-9993-F94F3229FE87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{008ABC3B-7659-4DE3-9993-F94F3229FE87}.Release|x64.ActiveCfg = Release|Any CPU
+		{008ABC3B-7659-4DE3-9993-F94F3229FE87}.Release|x64.Build.0 = Release|Any CPU
+		{008ABC3B-7659-4DE3-9993-F94F3229FE87}.Release|x86.ActiveCfg = Release|Any CPU
+		{008ABC3B-7659-4DE3-9993-F94F3229FE87}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0F2E8EEE-2F17-4231-862C-FE0116C4F473} = {3879F8E4-B49F-4C42-A738-363BBC82E32B}
+		{C864B4EE-36A7-45B1-AC2A-2DB9BFFCCE68} = {0F2E8EEE-2F17-4231-862C-FE0116C4F473}
+		{3FC1F3D4-3F1D-4348-9D98-410BB80E2F4F} = {C864B4EE-36A7-45B1-AC2A-2DB9BFFCCE68}
+		{008ABC3B-7659-4DE3-9993-F94F3229FE87} = {C864B4EE-36A7-45B1-AC2A-2DB9BFFCCE68}
+	EndGlobalSection
+EndGlobal
