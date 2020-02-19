@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <UseControlOnNuget>True</UseControlOnNuget>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
@@ -14,8 +15,9 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.3" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.3" />
+    <PackageReference Include="AvaloniaGraphControl" Version="0.1.1" Condition="'$(UseControlOnNuget)'=='True'" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../src/AvaloniaGraphControl.csproj" />
+    <ProjectReference Include="../src/AvaloniaGraphControl.csproj" Condition="'$(UseControlOnNuget)'=='False'" />
   </ItemGroup>
 </Project>
