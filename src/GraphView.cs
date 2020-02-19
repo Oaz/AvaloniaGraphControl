@@ -46,15 +46,17 @@ namespace AvaloniaGraphControl
 
     public GraphView()
     {
-      PropertyChanged += (s,args) => InvalidateVisual();
+      RenderTransformOrigin = new RelativePoint(0, 0, RelativeUnit.Absolute);
+      PropertyChanged += (s, args) => InvalidateVisual();
     }
     public override void Render(DrawingContext context)
     {
       if (Source == null)
         return;
       var viewPort = new Rect(Bounds.Size);
+      RenderTransform = new ScaleTransform(Zoom, Zoom);
       var renderers = ComputeLayoutAndGetRenderers(Source);
-      var transformer = new Transformer(Source.BoundingBox.LeftTop, Zoom);
+      var transformer = new Transformer(Source.BoundingBox.LeftTop);
       foreach (var render in renderers)
         render(context, transformer);
     }

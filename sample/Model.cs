@@ -23,7 +23,6 @@ namespace AvaloniaGraphControlSample
       get
       {
         var graph = new Microsoft.Msagl.Drawing.Graph("graph");
-        graph.Attr.OptimizeLabelPositions = true;
         graph.AddEdge("A", "B");
         graph.AddEdge("A", "D");
         graph.AddEdge("A", "E");
@@ -31,6 +30,7 @@ namespace AvaloniaGraphControlSample
         graph.AddEdge("B", "D");
         graph.AddEdge("D", "A");
         graph.AddEdge("D", "E");
+        graph.LayerConstraints.AddUpDownConstraint(graph.FindNode("A"), graph.FindNode("D"));
         foreach (var node in graph.Nodes)
         {
           node.Attr.Shape = Shape.Ellipse;
@@ -39,7 +39,7 @@ namespace AvaloniaGraphControlSample
         return graph;
       }
     }
-    
+
     public static Graph FamilyTree
     {
       get
@@ -63,12 +63,12 @@ namespace AvaloniaGraphControlSample
         graph.AddEdge("Ling", "Selma");
         foreach (var node in graph.Nodes)
         {
-          if(node.LabelText.StartsWith("f"))
+          if (node.LabelText.StartsWith("f"))
           {
             node.LabelText = string.Empty;
             node.Attr.FillColor = Color.Gray;
           }
-          else if(node.LabelText.StartsWith("_"))
+          else if (node.LabelText.StartsWith("_"))
           {
             node.LabelText = node.LabelText.Substring(1);
             node.Attr.FillColor = Color.LightSkyBlue;

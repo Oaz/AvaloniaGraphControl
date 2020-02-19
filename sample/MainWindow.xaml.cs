@@ -11,6 +11,7 @@ namespace AvaloniaGraphControlSample
     public MainWindow()
     {
       InitializeComponent();
+      this.FindControl<ComboBox>("layoutMethods").Items = Enum.GetValues(typeof(AvaloniaGraphControl.GraphView.LayoutMethods));
 #if DEBUG
       this.AttachDevTools();
 #endif
