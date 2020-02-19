@@ -16,6 +16,9 @@ The following layout methods are available in MSAGL and can be set in the GraphV
 * Ranking
 * IncrementalLayout
 
+The Graphview control and the MSAGL assemblies are bundled in [a nuget package](https://www.nuget.org/packages/AvaloniaGraphControl/).
+The existing MSAGL nuget packages are dedicated to the .NET Framework and do not include any netstandard assembly. 
+
 ## Example of graph definition
 
 ```C#
