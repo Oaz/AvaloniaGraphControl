@@ -1,0 +1,11 @@
+﻿<Window xmlns="https://github.com/avaloniaui" 
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+  xmlns:agc="clr-namespace:AvaloniaGraphControl;assembly=AvaloniaGraphControl" mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" Width="1000" Height="400" x:Class="AvaloniaGraphControlSample.MainWindow" Title="AvaloniaGraphControlSample">
+  <Grid ColumnDefinitions="200,1*" RowDefinitions="25,1*">
+    <TextBlock Grid.Column="0" Grid.Row="0">Graph Control Sample</TextBlock>
+    <ComboBox Name="graphs" Grid.Column="1" Grid.Row="0" Items="{Binding SampleGraphs}"/>
+    <agc:GraphView Grid.Column="0" Grid.Row="1" Source="{Binding SelectedItem.Graph, ElementName=graphs}"/>
+  </Grid>
+</Window>

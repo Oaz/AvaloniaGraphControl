@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSAGL.NETCore", "automatic-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSAGL.NETCore.Drawing", "automatic-graph-layout\GraphLayout\MSAGL.NETCore\Drawing\MSAGL.NETCore.Drawing.csproj", "{008ABC3B-7659-4DE3-9993-F94F3229FE87}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaGraphControl", "src\AvaloniaGraphControl.csproj", "{12E78A54-8101-4709-841A-ACEF1BC196A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaGraphControlSample", "sample\AvaloniaGraphControlSample.csproj", "{1B2CEFC9-EFFE-4D8F-8D0B-8003116A61F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +54,30 @@ Global
 		{008ABC3B-7659-4DE3-9993-F94F3229FE87}.Release|x64.Build.0 = Release|Any CPU
 		{008ABC3B-7659-4DE3-9993-F94F3229FE87}.Release|x86.ActiveCfg = Release|Any CPU
 		{008ABC3B-7659-4DE3-9993-F94F3229FE87}.Release|x86.Build.0 = Release|Any CPU
+		{12E78A54-8101-4709-841A-ACEF1BC196A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12E78A54-8101-4709-841A-ACEF1BC196A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12E78A54-8101-4709-841A-ACEF1BC196A4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{12E78A54-8101-4709-841A-ACEF1BC196A4}.Debug|x64.Build.0 = Debug|Any CPU
+		{12E78A54-8101-4709-841A-ACEF1BC196A4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{12E78A54-8101-4709-841A-ACEF1BC196A4}.Debug|x86.Build.0 = Debug|Any CPU
+		{12E78A54-8101-4709-841A-ACEF1BC196A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12E78A54-8101-4709-841A-ACEF1BC196A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12E78A54-8101-4709-841A-ACEF1BC196A4}.Release|x64.ActiveCfg = Release|Any CPU
+		{12E78A54-8101-4709-841A-ACEF1BC196A4}.Release|x64.Build.0 = Release|Any CPU
+		{12E78A54-8101-4709-841A-ACEF1BC196A4}.Release|x86.ActiveCfg = Release|Any CPU
+		{12E78A54-8101-4709-841A-ACEF1BC196A4}.Release|x86.Build.0 = Release|Any CPU
+		{1B2CEFC9-EFFE-4D8F-8D0B-8003116A61F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B2CEFC9-EFFE-4D8F-8D0B-8003116A61F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B2CEFC9-EFFE-4D8F-8D0B-8003116A61F7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1B2CEFC9-EFFE-4D8F-8D0B-8003116A61F7}.Debug|x64.Build.0 = Debug|Any CPU
+		{1B2CEFC9-EFFE-4D8F-8D0B-8003116A61F7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1B2CEFC9-EFFE-4D8F-8D0B-8003116A61F7}.Debug|x86.Build.0 = Debug|Any CPU
+		{1B2CEFC9-EFFE-4D8F-8D0B-8003116A61F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B2CEFC9-EFFE-4D8F-8D0B-8003116A61F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B2CEFC9-EFFE-4D8F-8D0B-8003116A61F7}.Release|x64.ActiveCfg = Release|Any CPU
+		{1B2CEFC9-EFFE-4D8F-8D0B-8003116A61F7}.Release|x64.Build.0 = Release|Any CPU
+		{1B2CEFC9-EFFE-4D8F-8D0B-8003116A61F7}.Release|x86.ActiveCfg = Release|Any CPU
+		{1B2CEFC9-EFFE-4D8F-8D0B-8003116A61F7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0F2E8EEE-2F17-4231-862C-FE0116C4F473} = {3879F8E4-B49F-4C42-A738-363BBC82E32B}
