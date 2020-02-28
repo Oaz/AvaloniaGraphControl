@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <Authors>Olivier Azeau</Authors>
     <Product>AvaloniaGraphControl</Product>
     <PackageId>AvaloniaGraphControl</PackageId>

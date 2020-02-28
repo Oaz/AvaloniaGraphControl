@@ -76,7 +76,8 @@ namespace AvaloniaGraphControl
 
       Action<DrawingContext, Transformer> drawArrowAtTarget = edge.Attr.ArrowheadAtTarget switch
       {
-        ArrowStyle.None => (context, transformer) => {},
+        ArrowStyle.None => (context, transformer) => { }
+        ,
         _ => (context, transformer) =>
         {
           var arrowHead = ComputeArrowHead(edge.EdgeCurve.End, edge.ArrowAtTargetPosition, 3.0);
@@ -85,11 +86,13 @@ namespace AvaloniaGraphControl
         }
       };
 
+      var nofill = new SolidColorBrush();
       void drawEdge(DrawingContext context, Transformer transformer)
       {
         var bounds = transformer.Transform(edge.BoundingBox);
-        context.DrawLine(new Pen(brush), transformer.Transform(edge.EdgeCurve.Start), transformer.Transform(edge.EdgeCurve.End));
-        drawArrowAtTarget(context,transformer);
+        var geom = new PathGeometry { Figures = new PathFigures { transformer.Transform(edge.EdgeCurve) } };
+        context.DrawGeometry(nofill, new Pen(brush), geom);
+        drawArrowAtTarget(context, transformer);
         if (text != null && edge.Label.IsVisible)
           context.DrawText(brush, transformer.Transform(edge.Label.LeftTop), text);
       }

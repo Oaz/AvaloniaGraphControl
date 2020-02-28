@@ -30,7 +30,6 @@ namespace AvaloniaGraphControlSample
         graph.AddEdge("B", "D");
         graph.AddEdge("D", "A");
         graph.AddEdge("D", "E");
-        graph.LayerConstraints.AddUpDownConstraint(graph.FindNode("A"), graph.FindNode("D"));
         foreach (var node in graph.Nodes)
         {
           node.Attr.Shape = Shape.Ellipse;
