@@ -6,10 +6,6 @@ using Avalonia.Media;
 
 namespace AvaloniaGraphControl {
   static class Factory {
-
-    public static Point CreatePoint(Microsoft.Msagl.Core.Geometry.Point point) => new Point(point.X, point.Y);
-    public static Rect CreateRect(Microsoft.Msagl.Core.Geometry.Rectangle r)
-      => new Rect(CreatePoint(r.LeftTop), CreatePoint(r.RightBottom));
     
     public static FormattedText CreateText(Microsoft.Msagl.Drawing.Label label) {
       if(label == null)

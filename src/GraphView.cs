@@ -5,12 +5,10 @@ using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Microsoft.Msagl.Core.Layout;
-using Microsoft.Msagl.Drawing;
 
 namespace AvaloniaGraphControl
 {
-  public class GraphView : Control
+  public class GraphView : Panel
   {
     public static readonly StyledProperty<Microsoft.Msagl.Drawing.Graph> SourceProperty = AvaloniaProperty.Register<GraphView, Microsoft.Msagl.Drawing.Graph>(nameof(Source));
 
@@ -44,33 +42,41 @@ namespace AvaloniaGraphControl
       set { SetValue(LayoutMethodProperty, value); }
     }
 
+    static GraphView()
+    {
+      SourceProperty.Changed.AddClassHandler<GraphView>((gv, _) => gv.ComputeGraphDrawing());
+      ZoomProperty.Changed.AddClassHandler<GraphView>((gv, _) => gv.RenderTransform = new ScaleTransform(gv.Zoom, gv.Zoom));
+      LayoutMethodProperty.Changed.AddClassHandler<GraphView>((gv, _) => gv.ComputeGraphDrawing());
+      AffectsMeasure<GraphView>(SourceProperty, LayoutMethodProperty);
+      AffectsRender<GraphView>(SourceProperty, ZoomProperty, LayoutMethodProperty);
+    }
+
     public GraphView()
     {
       RenderTransformOrigin = new RelativePoint(0, 0, RelativeUnit.Absolute);
-      PropertyChanged += (s, args) => InvalidateVisual();
-    }
-    public override void Render(DrawingContext context)
-    {
-      if (Source == null)
-        return;
-      var viewPort = new Rect(Bounds.Size);
-      RenderTransform = new ScaleTransform(Zoom, Zoom);
-      var renderers = ComputeLayoutAndGetRenderers(Source);
-      var transformer = new Transformer(Source.BoundingBox.LeftTop);
-      foreach (var render in renderers)
-        render(context, transformer);
     }
 
-    private IEnumerable<Action<DrawingContext, Transformer>> ComputeLayoutAndGetRenderers(Graph graph)
+    private void ComputeGraphDrawing()
     {
-      var edges = Source.Edges.Select(edge => RenderingHelper.GetEdge(edge)).ToList();
+      Children.Clear();
+      var graph = Source;
+      var edges = graph.Edges.Select(edge => EdgeView.Create(edge,graph)).ToList();
       graph.LayoutAlgorithmSettings = CurrentLayoutSettings;
       graph.CreateGeometryGraph();
-      var nodes = graph.Nodes.Select(dNode => RenderingHelper.GetNode(dNode, graph)).ToList();
+      var nodes = graph.Nodes.Select(dNode => NodeView.Create(dNode, graph)).ToList();
       Microsoft.Msagl.Miscellaneous.LayoutHelpers.CalculateLayout(graph.GeometryGraph, graph.LayoutAlgorithmSettings, null);
-      var subgraphs = RecurseInto(Source.RootSubgraph, sg => sg.Subgraphs).Select(sg => RenderingHelper.GetNode(sg));
-      var allRenderers = subgraphs.Concat(nodes).Concat(edges).ToList();
-      return allRenderers;
+      var subgraphs = RecurseInto(Source.RootSubgraph, sg => sg.Subgraphs).Select(sg => NodeView.CreateSubgraph(sg,graph));
+      Children.AddRange(subgraphs);
+      Children.AddRange(nodes);
+      Children.AddRange(edges);
+    }
+
+    protected override Size MeasureOverride(Size constraint)
+    {
+      if(Source==null)
+        return constraint;
+      var transformer = new AglToAvalonia(Source.BoundingBox.LeftTop);
+      return transformer.Convert(Source.BoundingBox.Size);
     }
 
     private static IEnumerable<T> RecurseInto<T>(T parent, Func<T, IEnumerable<T>> getChildren)

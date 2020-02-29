@@ -8,32 +8,37 @@ using Avalonia.Media;
 
 namespace AvaloniaGraphControl
 {
-  class Transformer
+  class AglToAvalonia
   {
     private readonly Microsoft.Msagl.Core.Geometry.Point origin;
 
-    public Transformer(Microsoft.Msagl.Core.Geometry.Point origin)
+    public AglToAvalonia(Microsoft.Msagl.Core.Geometry.Point origin)
     {
       this.origin = origin;
     }
 
-    public Point Transform(Microsoft.Msagl.Core.Geometry.Point pt)
+    public Point Convert(Microsoft.Msagl.Core.Geometry.Point pt)
     {
       return new Point(pt.X - origin.X, origin.Y - pt.Y);
     }
 
-    public Rect Transform(Microsoft.Msagl.Core.Geometry.Rectangle rect)
+    public Size Convert(Microsoft.Msagl.Core.DataStructures.Size size)
     {
-      return new Rect(Transform(rect.LeftTop), Transform(rect.RightBottom));
+      return new Size(size.Width, size.Height);
     }
 
-    public PathFigure Transform(Microsoft.Msagl.Core.Geometry.Curves.ICurve curve)
+    public Rect Convert(Microsoft.Msagl.Core.Geometry.Rectangle rect)
+    {
+      return new Rect(Convert(rect.LeftTop), Convert(rect.RightBottom));
+    }
+
+    public PathFigure Convert(Microsoft.Msagl.Core.Geometry.Curves.ICurve curve)
     {
       var segments = new PathSegments();
       segments.AddRange(Flatten(curve).Select(s => TransformSegment(s)));
       return new PathFigure
       {
-        StartPoint = Transform(curve.Start),
+        StartPoint = Convert(curve.Start),
         Segments = segments,
         IsClosed = false,
         IsFilled = false
@@ -49,13 +54,13 @@ namespace AvaloniaGraphControl
     private PathSegment TransformSegment(Microsoft.Msagl.Core.Geometry.Curves.ICurve curve)
     {
       if (curve is Microsoft.Msagl.Core.Geometry.Curves.LineSegment lineSegment)
-        return new LineSegment { Point = Transform(lineSegment.End) };
+        return new LineSegment { Point = Convert(lineSegment.End) };
       if (curve is Microsoft.Msagl.Core.Geometry.Curves.CubicBezierSegment bezierSegment)
         return new BezierSegment
         {
-          Point1 = Transform(bezierSegment.B(1)),
-          Point2 = Transform(bezierSegment.B(2)),
-          Point3 = Transform(bezierSegment.End)
+          Point1 = Convert(bezierSegment.B(1)),
+          Point2 = Convert(bezierSegment.B(2)),
+          Point3 = Convert(bezierSegment.End)
         };
       if (curve is Microsoft.Msagl.Core.Geometry.Curves.Ellipse ellipse)
         return ApproximateEllipticalArcWithBezierCurve_ThisMethodNeedsTesting(ellipse);
@@ -71,10 +76,11 @@ namespace AvaloniaGraphControl
       var q2 = ellipse.End - a * ellipse.Derivative(ellipse.ParEnd);
       return new BezierSegment
       {
-        Point1 = Transform(q1),
-        Point2 = Transform(q2),
-        Point3 = Transform(ellipse.End)
+        Point1 = Convert(q1),
+        Point2 = Convert(q2),
+        Point3 = Convert(ellipse.End)
       };
     }
+
   }
 }
