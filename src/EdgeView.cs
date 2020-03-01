@@ -11,10 +11,9 @@ namespace AvaloniaGraphControl
 {
   public class EdgeView : Control
   {
-    public static EdgeView Create(Edge edge, Graph graph) => new EdgeView(edge,graph);
     private Action<DrawingContext> render;
 
-    private EdgeView(Edge edge, Graph graph)
+    public EdgeView(Edge edge, Graph graph)
     {
       render = GetRenderer(edge,graph);
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.Media;
 
 namespace AvaloniaGraphControl
@@ -60,23 +61,81 @@ namespace AvaloniaGraphControl
     {
       Children.Clear();
       var graph = Source;
-      var edges = graph.Edges.Select(edge => EdgeView.Create(edge,graph)).ToList();
+      var edges = graph.Edges.Select(edge => CreateControlForEdge(edge)).ToList();
       graph.LayoutAlgorithmSettings = CurrentLayoutSettings;
       graph.CreateGeometryGraph();
-      var nodes = graph.Nodes.Select(dNode => NodeView.Create(dNode, graph)).ToList();
-      Microsoft.Msagl.Miscellaneous.LayoutHelpers.CalculateLayout(graph.GeometryGraph, graph.LayoutAlgorithmSettings, null);
-      var subgraphs = RecurseInto(Source.RootSubgraph, sg => sg.Subgraphs).Select(sg => NodeView.CreateSubgraph(sg,graph));
+      customNodes = new Dictionary<IControl, Microsoft.Msagl.Drawing.Node>();
+      var nodes = graph.Nodes.Select(dNode => CreateControlForNode(dNode)).ToList();
+      Source.GeometryGraph.RootCluster.RectangularBoundary = new Microsoft.Msagl.Core.Geometry.RectangularClusterBoundary();
+      var subgraphs = RecurseInto(Source.RootSubgraph, sg => sg.Subgraphs).Select(sg => new NodeView(sg, Source)).ToList();
       Children.AddRange(subgraphs);
-      Children.AddRange(nodes);
-      Children.AddRange(edges);
     }
+
+    public IControl CreateControlForEdge(Microsoft.Msagl.Drawing.Edge dEdge)
+    {
+      var edge = new EdgeView(dEdge, Source);
+      Children.Add(edge);
+      ((Avalonia.VisualTree.IVisual)edge).ZIndex = 1;
+      return edge;
+    }
+
+    public IControl CreateControlForNode(Microsoft.Msagl.Drawing.Node dNode)
+    {
+      var tpl = (dNode.UserData != null) ? this.FindDataTemplate(dNode.UserData) : null;
+      if (tpl == null)
+      {
+        var n = new NodeView(dNode, Source);
+        Children.Add(n);
+        ((Avalonia.VisualTree.IVisual)n).ZIndex = 2;
+        return n;
+      }
+      var ctrl = tpl.Build(dNode.UserData);
+      ctrl.DataContext = dNode.UserData;
+      ((Avalonia.Layout.Layoutable)ctrl).HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left;
+      ((Avalonia.Layout.Layoutable)ctrl).VerticalAlignment = Avalonia.Layout.VerticalAlignment.Top;
+      Children.Add(ctrl);
+      ((Avalonia.VisualTree.IVisual)ctrl).ZIndex = 2;
+      customNodes[ctrl] = dNode;
+      return ctrl;
+    }
+
+    Dictionary<IControl, Microsoft.Msagl.Drawing.Node> customNodes;
 
     protected override Size MeasureOverride(Size constraint)
     {
-      if(Source==null)
+      if (Source == null)
         return constraint;
+      foreach (var child in Children)
+      {
+        child.Measure(Size.Infinity);
+        if (customNodes.TryGetValue(child, out Microsoft.Msagl.Drawing.Node dNode))
+        {
+          dNode.GeometryNode.BoundaryCurve = Microsoft.Msagl.Drawing.NodeBoundaryCurves.GetNodeBoundaryCurve(dNode, child.DesiredSize.Width, child.DesiredSize.Height);
+        }
+      }
       var transformer = new AglToAvalonia(Source.BoundingBox.LeftTop);
       return transformer.Convert(Source.BoundingBox.Size);
+    }
+
+
+    protected override Size ArrangeOverride(Size finalSize)
+    {
+      if (Source == null)
+        return finalSize;
+      Microsoft.Msagl.Miscellaneous.LayoutHelpers.CalculateLayout(Source.GeometryGraph, Source.LayoutAlgorithmSettings, null);
+      var a2a = new AglToAvalonia(Source.BoundingBox.LeftTop);
+      foreach (var child in Children)
+      {
+        if (child is NodeView nv && nv.DrawingNode.GeometryNode.BoundaryCurve != null)
+        {
+          child.Arrange(a2a.Convert(nv.DrawingNode.BoundingBox));
+        }
+        if (customNodes.TryGetValue(child, out Microsoft.Msagl.Drawing.Node dNode))
+        {
+          child.Arrange(a2a.Convert(dNode.BoundingBox));
+        }
+      }
+      return finalSize;
     }
 
     private static IEnumerable<T> RecurseInto<T>(T parent, Func<T, IEnumerable<T>> getChildren)

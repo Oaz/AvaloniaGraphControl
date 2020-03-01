@@ -11,6 +11,25 @@ namespace AvaloniaGraphControlSample
     public Graph Graph { get; set; }
     public override string ToString() => Name;
   }
+
+  class FamilyMember
+  {
+    public FamilyMember(string name, Avalonia.Media.Color backgroungColor, string url)
+    {
+      Name = name;
+      BackgroundColor = new Avalonia.Media.SolidColorBrush(backgroungColor);
+      URL = url;
+    }
+
+    public void Navigate()
+    {
+      // do something
+      ;
+    }
+    public string Name { get; private set; }
+    public Avalonia.Media.IBrush BackgroundColor { get; private set; }
+    public string URL { get; private set; }
+  }
   class Model
   {
     public IEnumerable<NamedGraph> SampleGraphs => new NamedGraph[] {
@@ -23,6 +42,7 @@ namespace AvaloniaGraphControlSample
       get
       {
         var graph = new Microsoft.Msagl.Drawing.Graph("graph");
+        graph.RootSubgraph.IsVisible = false;
         graph.AddEdge("A", "B");
         graph.AddEdge("A", "D");
         graph.AddEdge("A", "E");
@@ -44,6 +64,7 @@ namespace AvaloniaGraphControlSample
       get
       {
         var graph = new Microsoft.Msagl.Drawing.Graph("graph");
+        graph.RootSubgraph.IsVisible = false;
         graph.Attr.LayerDirection = LayerDirection.BT;
         graph.AddEdge("f1", "_Abraham");
         graph.AddEdge("f1", "Mona");
@@ -77,6 +98,7 @@ namespace AvaloniaGraphControlSample
             node.Attr.FillColor = Color.LightPink;
           }
         }
+        graph.FindNode("Lisa").UserData = new FamilyMember("Lisa", Avalonia.Media.Colors.LightPink, "https://en.wikipedia.org/wiki/Lisa_Simpson");
         foreach (var edge in graph.Edges)
         {
           edge.Attr.ArrowheadAtTarget = ArrowStyle.None;
@@ -90,7 +112,6 @@ namespace AvaloniaGraphControlSample
       get
       {
         var graph = new Microsoft.Msagl.Drawing.Graph("graph");
-        graph.Attr.LayerDirection = LayerDirection.LR;
         graph.RootSubgraph.IsVisible = false;
 
         var mainGraph = new Subgraph("State Machine");
