@@ -19,7 +19,10 @@ namespace AvaloniaGraphControl
     static GeometryBorder()
     {
       AffectsMeasure<GeometryBorder>(GeometryProperty);
-      AffectsRender<GeometryBorder>(BackgroundProperty, BorderBrushProperty,BorderThicknessProperty);
+      AffectsRender<GeometryBorder>(BackgroundProperty, BorderBrushProperty, BorderThicknessProperty);
+      BackgroundProperty.Changed.AddClassHandler<GeometryBorder>((gb, ea) => gb.Drawing.Brush = (IBrush)ea.NewValue);
+      BorderBrushProperty.Changed.AddClassHandler<GeometryBorder>((gb, ea) => gb.Drawing.Pen = new Pen((IBrush)ea.NewValue));
+      GeometryProperty.Changed.AddClassHandler<GeometryBorder>((gb, ea) => gb.Drawing.Geometry = (Geometry)ea.NewValue);
     }
 
     public IBrush Background
@@ -48,9 +51,6 @@ namespace AvaloniaGraphControl
     public GeometryBorder()
     {
       Drawing = new GeometryDrawing();
-      BackgroundProperty.Changed.AddClassHandler<GeometryBorder>((gb, ea) => gb.Drawing.Brush = (IBrush)ea.NewValue);
-      BorderBrushProperty.Changed.AddClassHandler<GeometryBorder>((gb, ea) => gb.Drawing.Pen = new Pen((IBrush)ea.NewValue));
-      GeometryProperty.Changed.AddClassHandler<GeometryBorder>((gb, ea) => gb.Drawing.Geometry = (Geometry)ea.NewValue);
     }
 
     public override void Render(DrawingContext context)

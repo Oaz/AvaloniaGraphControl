@@ -9,54 +9,105 @@ using Microsoft.Msagl.Drawing;
 
 namespace AvaloniaGraphControl
 {
-  public class EdgeView : Control
+  public class EdgeView : Decorator
   {
-    private Action<DrawingContext> render;
+    public readonly Edge DrawingEdge;
+    private Graph graph;
+    private IBrush brush;
+    private readonly List<Drawing> Drawings;
 
     public EdgeView(Edge edge, Graph graph)
     {
-      render = GetRenderer(edge,graph);
+      DrawingEdge = edge;
+      this.graph = graph;
+      this.Drawings = new List<Drawing>();
+      this.brush = new SolidColorBrush(Factory.CreateColor(edge.Attr.Color));
+      if (edge.Label != null && edge.Label.IsVisible)
+      {
+        var (fontStyle, fontWeight) = Factory.GetFontProps(edge.Label.FontStyle);
+        Child = new TextBlock
+        {
+          Text = edge.LabelText,
+          FontFamily = Factory.CreateFontFamily(edge.Label),
+          FontSize = edge.Label.FontSize,
+          FontWeight = fontWeight,
+          FontStyle = fontStyle,
+          Foreground = brush,
+          HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left,
+          VerticalAlignment = Avalonia.Layout.VerticalAlignment.Top
+        };
+      }
     }
 
+    protected override Size MeasureOverride(Size availableSize)
+    {
+      if (Child == null)
+        return availableSize;
+      Child.Measure(availableSize);
+      var bounds = new Rect(Child.DesiredSize);
+      DrawingEdge.Label.Width = bounds.Width;
+      DrawingEdge.Label.Height = bounds.Height;
+      return bounds.Size;
+    }
+
+    protected override Size ArrangeOverride(Size finalSize)
+    {
+      /*
+      void logBox(string name, Microsoft.Msagl.Core.Geometry.Rectangle rect) => System.Diagnostics.Debug.WriteLine("{0} {1} {2} {3}", name, rect, rect.Width, rect.Height);
+      System.Diagnostics.Debug.WriteLine("Edge {0}", DrawingEdge);
+      logBox("EdgeCurve", DrawingEdge.EdgeCurve.BoundingBox);
+      logBox("GeometryEdge", DrawingEdge.GeometryEdge.BoundingBox);
+      logBox("EdgeGeometry", DrawingEdge.GeometryEdge.EdgeGeometry.BoundingBox);
+      */
+      Drawings.Clear();
+      var box = DrawingEdge.BoundingBox;
+      var a2a = new AglToAvalonia(box.LeftTop);
+      // curve
+      var nofill = new SolidColorBrush();
+      Drawings.Add(FigureToDrawing(CreateEdgePathFigure(DrawingEdge, a2a), brush, nofill));
+      if (DrawingEdge.Attr.ArrowAtTarget)
+        Drawings.Add(FigureToDrawing(CreateArrowHeadFigure(DrawingEdge.EdgeCurve.End, DrawingEdge.ArrowAtTargetPosition, a2a), brush, brush));
+      // label
+      if (Child != null)
+        Child.Arrange(a2a.Convert(DrawingEdge.Label.BoundingBox));
+
+      return a2a.Convert(box.Size);
+    }
     public override void Render(DrawingContext context)
     {
-      render(context);
-    }
-
-    private static Action<DrawingContext> GetRenderer(Edge edge, Graph graph)
-    {
-      var brush = new SolidColorBrush(Factory.CreateColor(edge.Attr.Color));
-      var text = Factory.CreateText(edge.Label);
-      if (edge.Label != null)
+      foreach (var drawing in Drawings)
       {
-        edge.Label.Width = text.Bounds.Width;
-        edge.Label.Height = text.Bounds.Height;
+        drawing.Draw(context);
       }
-
-      Action<DrawingContext, AglToAvalonia> drawArrowAtTarget = edge.Attr.ArrowheadAtTarget switch
+    }
+    private static Drawing FigureToDrawing(PathFigure figure, IBrush strokeBrush, IBrush fillBrush)
+    {
+      return new GeometryDrawing()
       {
-        ArrowStyle.None => (context, a2a) => { }
-        ,
-        _ => (context, a2a) =>
+        Pen = new Pen(strokeBrush),
+        Brush = fillBrush,
+        Geometry = new PathGeometry
         {
-          var arrowHead = ComputeArrowHead(edge.EdgeCurve.End, edge.ArrowAtTargetPosition, 3.0);
-          var poly = new PolylineGeometry(arrowHead.Select(p => a2a.Convert(p)).ToArray(), false);
-          context.DrawGeometry(brush, new Pen(brush), poly);
+          Figures = new PathFigures
+          {
+            figure
+          }
         }
       };
+    }
 
-      var nofill = new SolidColorBrush();
-      void drawEdge(DrawingContext context)
-      {
-        var a2a = new AglToAvalonia(graph.BoundingBox.LeftTop);
-        var bounds = a2a.Convert(edge.BoundingBox);
-        var geom = new PathGeometry { Figures = new PathFigures { a2a.Convert(edge.EdgeCurve) } };
-        context.DrawGeometry(nofill, new Pen(brush), geom);
-        drawArrowAtTarget(context, a2a);
-        if (text != null && edge.Label.IsVisible)
-          context.DrawText(brush, a2a.Convert(edge.Label.LeftTop), text);
-      }
-      return drawEdge;
+    private static PathFigure CreateEdgePathFigure(Edge edge, AglToAvalonia a2a)
+    {
+      return a2a.Convert(edge.EdgeCurve);
+    }
+
+    private static PathFigure CreateArrowHeadFigure(Microsoft.Msagl.Core.Geometry.Point origin, Microsoft.Msagl.Core.Geometry.Point target, AglToAvalonia a2a)
+    {
+      var arrowHead = ComputeArrowHead(origin, target, 3.0).ToList();
+      var segments = new PathSegments();
+      segments.AddRange(arrowHead.Skip(1).Select(p => new LineSegment { Point = a2a.Convert(p) }));
+      var figure = new PathFigure { IsFilled = true, IsClosed = true, StartPoint = a2a.Convert(arrowHead.First()), Segments = segments };
+      return figure;
     }
 
     private static IEnumerable<Microsoft.Msagl.Core.Geometry.Point> ComputeArrowHead(

@@ -107,7 +107,7 @@ namespace AvaloniaGraphControl
         return constraint;
       foreach (var child in Children)
       {
-        child.Measure(Size.Infinity);
+        child.Measure(constraint);
         if (customNodes.TryGetValue(child, out Microsoft.Msagl.Drawing.Node dNode))
         {
           dNode.GeometryNode.BoundaryCurve = Microsoft.Msagl.Drawing.NodeBoundaryCurves.GetNodeBoundaryCurve(dNode, child.DesiredSize.Width, child.DesiredSize.Height);
@@ -133,6 +133,10 @@ namespace AvaloniaGraphControl
         if (customNodes.TryGetValue(child, out Microsoft.Msagl.Drawing.Node dNode))
         {
           child.Arrange(a2a.Convert(dNode.BoundingBox));
+        }
+        if (child is EdgeView ev)
+        {
+          child.Arrange(a2a.Convert(ev.DrawingEdge.BoundingBox));
         }
       }
       return finalSize;
