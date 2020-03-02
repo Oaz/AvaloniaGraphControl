@@ -38,7 +38,7 @@ namespace AvaloniaGraphControl
           FontStyle = fontStyle,
           Foreground = frontBrush,
           HorizontalAlignment = isSubGraph ? Avalonia.Layout.HorizontalAlignment.Left : Avalonia.Layout.HorizontalAlignment.Center,
-          VerticalAlignment =  isSubGraph ? Avalonia.Layout.VerticalAlignment.Top : Avalonia.Layout.VerticalAlignment.Center
+          VerticalAlignment = isSubGraph ? Avalonia.Layout.VerticalAlignment.Top : Avalonia.Layout.VerticalAlignment.Center
         }
       };
     }
@@ -47,20 +47,19 @@ namespace AvaloniaGraphControl
     {
       Child.Measure(availableSize);
       var bounds = new Rect(Child.DesiredSize);
-      ComputeGeometry(bounds);
       DrawingNode.GeometryNode.BoundaryCurve = Microsoft.Msagl.Drawing.NodeBoundaryCurves.GetNodeBoundaryCurve(DrawingNode, bounds.Size.Width, bounds.Size.Height);
       return bounds.Size;
     }
 
     protected override Size ArrangeOverride(Size finalSize)
     {
-      ComputeGeometry(new Rect(finalSize));
+      ((GeometryBorder)Child).Geometry = ComputeGeometry(new Rect(finalSize));
       return base.ArrangeOverride(finalSize);
     }
 
-    private void ComputeGeometry(Rect bounds)
+    private Geometry ComputeGeometry(Rect bounds)
     {
-      ((GeometryBorder)Child).Geometry = DrawingNode.Attr.Shape switch
+      return DrawingNode.Attr.Shape switch
       {
         Shape.Circle => new EllipseGeometry(bounds),
         Shape.Ellipse => new EllipseGeometry(bounds),
