@@ -20,6 +20,9 @@
                    Zoom="{Binding Value, ElementName=zoomer}"
                    LayoutMethod="{Binding SelectedItem, ElementName=layoutMethods}">
       <agc:GraphView.DataTemplates>
+        <DataTemplate DataType="{x:Type local:InteractiveItem}">
+          <ToggleButton Content="{Binding Name}" />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type local:FamilyMember}">
           <Button
             Content="{Binding Name}"

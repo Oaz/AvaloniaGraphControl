@@ -12,6 +12,15 @@ namespace AvaloniaGraphControlSample
     public override string ToString() => Name;
   }
 
+  class InteractiveItem
+  {
+    public InteractiveItem(string name)
+    {
+      Name = name;
+    }
+    public string Name { get; private set; }
+  }
+
   class FamilyMember
   {
     public FamilyMember(string name, Avalonia.Media.Color backgroungColor, string url)
@@ -23,17 +32,29 @@ namespace AvaloniaGraphControlSample
 
     public void Navigate()
     {
-      // do something
-      ;
+      if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux))
+        System.Diagnostics.Process.Start("xdg-open", URL);
+      else
+        System.Diagnostics.Process.Start(URL);
     }
     public string Name { get; private set; }
     public Avalonia.Media.IBrush BackgroundColor { get; private set; }
     public string URL { get; private set; }
   }
+
+  class Male : FamilyMember
+  {
+    public Male(string name, string url) : base(name, Avalonia.Media.Colors.LightSkyBlue, url) { }
+  }
+  class Female : FamilyMember
+  {
+    public Female(string name, string url) : base(name, Avalonia.Media.Colors.LightPink, url) { }
+  }
   class Model
   {
     public IEnumerable<NamedGraph> SampleGraphs => new NamedGraph[] {
       new NamedGraph {Name="Simple Graph", Graph=SimpleGraph},
+      new NamedGraph {Name="Simple Interactive Graph", Graph=SimpleInteractiveGraph},
       new NamedGraph {Name="Family Tree", Graph=FamilyTree},
       new NamedGraph {Name="State Machine", Graph=StateMachine}
     };
@@ -59,6 +80,20 @@ namespace AvaloniaGraphControlSample
       }
     }
 
+    public static Graph SimpleInteractiveGraph
+    {
+      get
+      {
+        var graph = SimpleGraph;
+        foreach (var node in graph.Nodes)
+        {
+          node.Attr.Shape = Shape.Box;
+          node.UserData = new InteractiveItem(node.Id);
+        }
+        return graph;
+      }
+    }
+
     public static Graph FamilyTree
     {
       get
@@ -66,18 +101,17 @@ namespace AvaloniaGraphControlSample
         var graph = new Microsoft.Msagl.Drawing.Graph("graph");
         graph.RootSubgraph.IsVisible = false;
         graph.Attr.LayerDirection = LayerDirection.BT;
-        graph.AddEdge("f1", "_Abraham");
+        graph.AddEdge("f1", "Abraham");
         graph.AddEdge("f1", "Mona");
-        graph.AddEdge("_Herb", "f1");
-        graph.AddEdge("_Homer", "f1");
-        graph.AddEdge("f2", "_Clancy");
+        graph.AddEdge("Homer", "f1");
+        graph.AddEdge("f2", "Clancy");
         graph.AddEdge("f2", "Jackie");
         graph.AddEdge("Marge", "f2");
         graph.AddEdge("Patty", "f2");
         graph.AddEdge("Selma", "f2");
-        graph.AddEdge("f3", "_Homer");
+        graph.AddEdge("f3", "Homer");
         graph.AddEdge("f3", "Marge");
-        graph.AddEdge("_Bart", "f3");
+        graph.AddEdge("Bart", "f3");
         graph.AddEdge("Lisa", "f3");
         graph.AddEdge("Maggie", "f3");
         graph.AddEdge("Ling", "Selma");
@@ -88,17 +122,19 @@ namespace AvaloniaGraphControlSample
             node.LabelText = string.Empty;
             node.Attr.FillColor = Color.Gray;
           }
-          else if (node.LabelText.StartsWith("_"))
-          {
-            node.LabelText = node.LabelText.Substring(1);
-            node.Attr.FillColor = Color.LightSkyBlue;
-          }
-          else
-          {
-            node.Attr.FillColor = Color.LightPink;
-          }
         }
-        graph.FindNode("Lisa").UserData = new FamilyMember("Lisa", Avalonia.Media.Colors.LightPink, "https://en.wikipedia.org/wiki/Lisa_Simpson");
+        graph.FindNode("Abraham").UserData = new Male("Abraham", "https://en.wikipedia.org/wiki/Grampa_Simpson");
+        graph.FindNode("Mona").UserData = new Female("Mona", "https://en.wikipedia.org/wiki/Mona_Simpson_(The_Simpsons)");
+        graph.FindNode("Homer").UserData = new Male("Homer", "https://en.wikipedia.org/wiki/Homer_Simpson");
+        graph.FindNode("Clancy").UserData = new Male("Clancy", "https://en.wikipedia.org/wiki/Simpson_family#Clancy_Bouvier");
+        graph.FindNode("Jackie").UserData = new Female("Jackie", "https://en.wikipedia.org/wiki/Simpson_family#Jacqueline_Bouvier");
+        graph.FindNode("Marge").UserData = new Female("Marge", "https://en.wikipedia.org/wiki/Marge_Simpson");
+        graph.FindNode("Patty").UserData = new Female("Patty", "https://en.wikipedia.org/wiki/Patty_and_Selma");
+        graph.FindNode("Selma").UserData = new Female("Selma", "https://en.wikipedia.org/wiki/Patty_and_Selma");
+        graph.FindNode("Ling").UserData = new Female("Ling", "https://en.wikipedia.org/wiki/Simpson_family#Ling_Bouvier");
+        graph.FindNode("Bart").UserData = new Male("Bart", "https://en.wikipedia.org/wiki/Bart_Simpson");
+        graph.FindNode("Lisa").UserData = new Female("Lisa", "https://en.wikipedia.org/wiki/Lisa_Simpson");
+        graph.FindNode("Maggie").UserData = new Female("Maggie", "https://en.wikipedia.org/wiki/Maggie_Simpson");
         foreach (var edge in graph.Edges)
         {
           edge.Attr.ArrowheadAtTarget = ArrowStyle.None;
