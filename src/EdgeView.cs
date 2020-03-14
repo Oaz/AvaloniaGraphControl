@@ -12,14 +12,12 @@ namespace AvaloniaGraphControl
   public class EdgeView : Decorator
   {
     public readonly Edge DrawingEdge;
-    private Graph graph;
-    private IBrush brush;
+    private readonly IBrush brush;
     private readonly List<Drawing> Drawings;
 
-    public EdgeView(Edge edge, Graph graph)
+    public EdgeView(Edge edge)
     {
       DrawingEdge = edge;
-      this.graph = graph;
       this.Drawings = new List<Drawing>();
       this.brush = new SolidColorBrush(Factory.CreateColor(edge.Attr.Color));
       if (edge.Label != null && edge.Label.IsVisible)
@@ -52,13 +50,6 @@ namespace AvaloniaGraphControl
 
     protected override Size ArrangeOverride(Size finalSize)
     {
-      /*
-      void logBox(string name, Microsoft.Msagl.Core.Geometry.Rectangle rect) => System.Diagnostics.Debug.WriteLine("{0} {1} {2} {3}", name, rect, rect.Width, rect.Height);
-      System.Diagnostics.Debug.WriteLine("Edge {0}", DrawingEdge);
-      logBox("EdgeCurve", DrawingEdge.EdgeCurve.BoundingBox);
-      logBox("GeometryEdge", DrawingEdge.GeometryEdge.BoundingBox);
-      logBox("EdgeGeometry", DrawingEdge.GeometryEdge.EdgeGeometry.BoundingBox);
-      */
       Drawings.Clear();
       var box = DrawingEdge.BoundingBox;
       var a2a = new AglToAvalonia(box.LeftTop);

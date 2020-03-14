@@ -73,7 +73,7 @@ namespace AvaloniaGraphControl
 
     public IControl CreateControlForEdge(Microsoft.Msagl.Drawing.Edge dEdge)
     {
-      var edge = new EdgeView(dEdge, Source);
+      var edge = new EdgeView(dEdge);
       Children.Add(edge);
       ((Avalonia.VisualTree.IVisual)edge).ZIndex = 1;
       return edge;
@@ -126,20 +126,23 @@ namespace AvaloniaGraphControl
       var a2a = new AglToAvalonia(Source.BoundingBox.LeftTop);
       foreach (var child in Children)
       {
-        if (child is NodeView nv && nv.DrawingNode.GeometryNode.BoundaryCurve != null)
-        {
-          child.Arrange(a2a.Convert(nv.DrawingNode.BoundingBox));
-        }
-        if (customNodes.TryGetValue(child, out Microsoft.Msagl.Drawing.Node dNode))
-        {
-          child.Arrange(a2a.Convert(dNode.BoundingBox));
-        }
-        if (child is EdgeView ev)
-        {
-          child.Arrange(a2a.Convert(ev.DrawingEdge.BoundingBox));
-        }
+        var bbox = GetBoundingBox(child);
+        if(!bbox.HasValue)
+          continue;
+        child.Arrange(a2a.Convert(bbox.Value));
       }
       return finalSize;
+    }
+
+    private Microsoft.Msagl.Core.Geometry.Rectangle? GetBoundingBox(IControl ctrl)
+    {
+      if (ctrl is NodeView nv && nv.DrawingNode.GeometryNode.BoundaryCurve != null)
+        return nv.DrawingNode.BoundingBox;
+      if (customNodes.TryGetValue(ctrl, out Microsoft.Msagl.Drawing.Node dNode))
+        return dNode.BoundingBox;
+      if (ctrl is EdgeView ev)
+        return ev.DrawingEdge.BoundingBox;
+      return null;
     }
 
     private static IEnumerable<T> RecurseInto<T>(T parent, Func<T, IEnumerable<T>> getChildren)
