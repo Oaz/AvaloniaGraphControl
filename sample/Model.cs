@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Microsoft.Msagl.Drawing;
 
 namespace AvaloniaGraphControlSample
@@ -12,12 +11,14 @@ namespace AvaloniaGraphControlSample
     public override string ToString() => Name;
   }
 
+  class StandardItem
+  {
+    public StandardItem(string name) { Name = name; }
+    public string Name { get; private set; }
+  }
   class InteractiveItem
   {
-    public InteractiveItem(string name)
-    {
-      Name = name;
-    }
+    public InteractiveItem(string name) { Name = name; }
     public string Name { get; private set; }
   }
 
@@ -72,10 +73,7 @@ namespace AvaloniaGraphControlSample
         graph.AddEdge("D", "A");
         graph.AddEdge("D", "E");
         foreach (var node in graph.Nodes)
-        {
-          node.Attr.Shape = Shape.Ellipse;
-          node.LabelText = "   " + node.LabelText + "   ";
-        }
+          node.UserData = new StandardItem(node.Id);
         return graph;
       }
     }
@@ -86,10 +84,7 @@ namespace AvaloniaGraphControlSample
       {
         var graph = SimpleGraph;
         foreach (var node in graph.Nodes)
-        {
-          node.Attr.Shape = Shape.Box;
           node.UserData = new InteractiveItem(node.Id);
-        }
         return graph;
       }
     }

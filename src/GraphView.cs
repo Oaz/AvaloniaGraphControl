@@ -91,8 +91,6 @@ namespace AvaloniaGraphControl
       }
       var ctrl = tpl.Build(dNode.UserData);
       ctrl.DataContext = dNode.UserData;
-      ((Avalonia.Layout.Layoutable)ctrl).HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left;
-      ((Avalonia.Layout.Layoutable)ctrl).VerticalAlignment = Avalonia.Layout.VerticalAlignment.Top;
       Children.Add(ctrl);
       ((Avalonia.VisualTree.IVisual)ctrl).ZIndex = 2;
       customNodes[ctrl] = dNode;
@@ -110,7 +108,10 @@ namespace AvaloniaGraphControl
         child.Measure(constraint);
         if (customNodes.TryGetValue(child, out Microsoft.Msagl.Drawing.Node dNode))
         {
-          dNode.GeometryNode.BoundaryCurve = Microsoft.Msagl.Drawing.NodeBoundaryCurves.GetNodeBoundaryCurve(dNode, child.DesiredSize.Width, child.DesiredSize.Height);
+          if (child is TextSticker ts)
+            dNode.GeometryNode.BoundaryCurve = AglCurveFactory.Create(ts.Shape, ts.DesiredSize, ts.BorderRadius);
+          else
+            dNode.GeometryNode.BoundaryCurve = Microsoft.Msagl.Drawing.NodeBoundaryCurves.GetNodeBoundaryCurve(dNode, child.DesiredSize.Width, child.DesiredSize.Height);
         }
       }
       var transformer = new AglToAvalonia(Source.BoundingBox.LeftTop);
@@ -127,7 +128,7 @@ namespace AvaloniaGraphControl
       foreach (var child in Children)
       {
         var bbox = GetBoundingBox(child);
-        if(!bbox.HasValue)
+        if (!bbox.HasValue)
           continue;
         child.Arrange(a2a.Convert(bbox.Value));
       }

@@ -25,7 +25,7 @@ namespace AvaloniaGraphControl
       {
         BorderBrush = frontBrush,
         Background = fillBrush,
-        BorderThickness = new Thickness(1),
+        BorderThickness = 1,
         MinHeight = graph.Attr.MinNodeHeight,
         MinWidth = graph.Attr.MinNodeWidth,
         Child = new TextBlock
