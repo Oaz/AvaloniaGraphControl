@@ -83,12 +83,9 @@ namespace AvaloniaGraphControl
         var dEdge = graph.AddEdge(nodeVMs[evm.Tail].ID, nodeVMs[evm.Head].ID);
         dEdge.Attr.ArrowheadAtSource = Edge.GetArrowStyle(evm.TailSymbol);
         dEdge.Attr.ArrowheadAtTarget = Edge.GetArrowStyle(evm.HeadSymbol);
-        dEdge.LabelText="x";
+        dEdge.LabelText = "x";
         evm.DEdge = dEdge;
-        var ctrl = CreateControlForEdge(evm);
-        ctrl.DataContext = evm;
-        Children.Add(ctrl);
-        ctrl.ZIndex = 1;
+        CreateControl(evm, _ => new Connection(), 1);
       }
       graph.CreateGeometryGraph();
       graph.GeometryGraph.RootCluster.RectangularBoundary = new Microsoft.Msagl.Core.Geometry.RectangularClusterBoundary();
@@ -97,26 +94,30 @@ namespace AvaloniaGraphControl
       {
         if (!evm.Label.Equals(string.Empty))
         {
-          var lctrl = CreateControlForLabel(evm);
-          lctrl.DataContext = evm.Label;
-          Children.Add(lctrl);
-          lctrl.ZIndex = 2;
-          vmOfCtrl[lctrl] = new LabelWrapper(evm.Label, idGenerator, evm.DEdge.Label);
+          var ctrl = CreateControl(evm.Label, l => new TextBlock { Text = l.ToString(), FontSize = 6 }, 2);
+          vmOfCtrl[ctrl] = new LabelWrapper(evm.Label, idGenerator, evm.DEdge.Label);
         }
       }
       foreach (var nvm in nodeVMs.Values)
       {
         var dNode = graph.FindNode(nvm.ID);
         nvm.DNode = dNode;
-        var ctrl = CreateControlForNode(nvm);
-        ctrl.DataContext = nvm.VM;
-        Children.Add(ctrl);
-        ctrl.ZIndex = 3;
+        var ctrl = CreateControl(nvm.VM, n => new TextSticker { Text = n.ToString() }, 3);
         vmOfCtrl[ctrl] = nvm;
       }
 
       //var subgraphs = RecurseInto(Source.RootSubgraph, sg => sg.Subgraphs).Select(sg => new NodeView(sg, Source)).ToList();
       //Children.AddRange(subgraphs);
+    }
+
+    private IControl CreateControl(object vm, Func<object, IControl> getDefault, int zIndex)
+    {
+      var tpl = this.FindDataTemplate(vm);
+      var ctrl = tpl == null ? getDefault(vm) : tpl.Build(vm);
+      ctrl.DataContext = vm;
+      Children.Add(ctrl);
+      ctrl.ZIndex = zIndex;
+      return ctrl;
     }
 
     Microsoft.Msagl.Drawing.Graph graph;
@@ -167,21 +168,6 @@ namespace AvaloniaGraphControl
       }
     }
 
-    private IControl CreateControlForNode(NodeWrapper nvm)
-    {
-      var tpl = this.FindDataTemplate(nvm.VM);
-      return tpl == null ? new TextSticker { Text = nvm.VM.ToString() } : tpl.Build(nvm.VM);
-    }
-    private Connection CreateControlForEdge(Edge evm)
-    {
-      var tpl = this.FindDataTemplate(evm);
-      return tpl == null ? new Connection() : (Connection)tpl.Build(evm);
-    }
-    private IControl CreateControlForLabel(Edge evm)
-    {
-      var tpl = this.FindDataTemplate(evm.Label);
-      return tpl == null ? new TextBlock { Text = evm.Label.ToString(), FontSize = 6 } : tpl.Build(evm.Label);
-    }
     protected override Size MeasureOverride(Size constraint)
     {
       if (Edges == null)
