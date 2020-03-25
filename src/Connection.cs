@@ -9,59 +9,35 @@ using Microsoft.Msagl.Drawing;
 
 namespace AvaloniaGraphControl
 {
-  public class EdgeView : Decorator
+  public class Connection : Control
   {
-    public readonly Microsoft.Msagl.Drawing.Edge DrawingEdge;
-    private readonly IBrush brush;
-    private readonly List<Drawing> Drawings;
-
-    public EdgeView(Microsoft.Msagl.Drawing.Edge edge)
+    public static readonly StyledProperty<IBrush> BrushProperty = AvaloniaProperty.Register<Connection, IBrush>(nameof(Brush), Brushes.Black);
+    public IBrush Brush
     {
-      DrawingEdge = edge;
-      this.Drawings = new List<Drawing>();
-      this.brush = new SolidColorBrush(Factory.CreateColor(edge.Attr.Color));
-      if (edge.Label != null && edge.Label.IsVisible)
-      {
-        var (fontStyle, fontWeight) = Factory.GetFontProps(edge.Label.FontStyle);
-        Child = new TextBlock
-        {
-          Text = edge.LabelText,
-          FontFamily = Factory.CreateFontFamily(edge.Label),
-          FontSize = edge.Label.FontSize,
-          FontWeight = fontWeight,
-          FontStyle = fontStyle,
-          Foreground = brush,
-          HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left,
-          VerticalAlignment = Avalonia.Layout.VerticalAlignment.Top
-        };
-      }
+      get => GetValue(BrushProperty);
+      set => SetValue(BrushProperty, value);
     }
 
-    protected override Size MeasureOverride(Size availableSize)
+    private readonly List<Drawing> Drawings;
+
+    public Connection()
     {
-      if (Child == null)
-        return availableSize;
-      Child.Measure(availableSize);
-      var bounds = new Rect(Child.DesiredSize);
-      DrawingEdge.Label.Width = bounds.Width;
-      DrawingEdge.Label.Height = bounds.Height;
-      return bounds.Size;
+      this.Drawings = new List<Drawing>();
     }
 
     protected override Size ArrangeOverride(Size finalSize)
     {
       Drawings.Clear();
-      var box = DrawingEdge.BoundingBox;
+      var edge = (Edge)this.DataContext;
+      var dEdge = edge.DEdge;
+      var box = dEdge.BoundingBox;
       var a2a = new AglToAvalonia(box.LeftTop);
-      // curve
       var nofill = new SolidColorBrush();
-      Drawings.Add(FigureToDrawing(CreateEdgePathFigure(DrawingEdge, a2a), brush, nofill));
-      if (DrawingEdge.Attr.ArrowAtTarget)
-        Drawings.Add(FigureToDrawing(CreateArrowHeadFigure(DrawingEdge.EdgeCurve.End, DrawingEdge.ArrowAtTargetPosition, a2a), brush, brush));
-      // label
-      if (Child != null)
-        Child.Arrange(a2a.Convert(DrawingEdge.Label.BoundingBox));
-
+      Drawings.Add(FigureToDrawing(CreateEdgePathFigure(dEdge, a2a), Brush, nofill));
+      if (edge.HeadSymbol == Edge.Symbol.Arrow)
+        Drawings.Add(FigureToDrawing(CreateArrowHeadFigure(dEdge.EdgeCurve.End, dEdge.ArrowAtTargetPosition, a2a), Brush, Brush));
+      if (edge.TailSymbol == Edge.Symbol.Arrow)
+        Drawings.Add(FigureToDrawing(CreateArrowHeadFigure(dEdge.EdgeCurve.Start, dEdge.ArrowAtSourcePosition, a2a), Brush, Brush));
       return a2a.Convert(box.Size);
     }
     public override void Render(DrawingContext context)

@@ -8,6 +8,7 @@ namespace AvaloniaGraphControlSample
   {
     public string Name { get; set; }
     public Graph Graph { get; set; }
+    public IEnumerable<AvaloniaGraphControl.Edge> Edges { get; set; }
     public override string ToString() => Name;
   }
 
@@ -51,12 +52,16 @@ namespace AvaloniaGraphControlSample
   {
     public Female(string name, string url) : base(name, Avalonia.Media.Colors.LightPink, url) { }
   }
+  class Family
+  {
+  }
+
   class Model
   {
     public IEnumerable<NamedGraph> SampleGraphs => new NamedGraph[] {
-      new NamedGraph {Name="Simple Graph", Graph=SimpleGraph},
-      new NamedGraph {Name="Simple Interactive Graph", Graph=SimpleInteractiveGraph},
-      new NamedGraph {Name="Family Tree", Graph=FamilyTree},
+      new NamedGraph {Name="Simple Graph", Graph=SimpleGraph, Edges=SimpleGraphEdges},
+      new NamedGraph {Name="Simple Interactive Graph", Graph=SimpleInteractiveGraph, Edges=SimpleInteractiveGraphEdges},
+      new NamedGraph {Name="Family Tree", Graph=FamilyTree, Edges=FamilyTreeEdges},
       new NamedGraph {Name="State Machine", Graph=StateMachine}
     };
     public static Graph SimpleGraph
@@ -78,6 +83,25 @@ namespace AvaloniaGraphControlSample
       }
     }
 
+    public static IEnumerable<AvaloniaGraphControl.Edge> SimpleGraphEdges
+    {
+      get
+      {
+        var a = new StandardItem("A");
+        var b = new StandardItem("B");
+        var c = new StandardItem("C");
+        var d = new StandardItem("D");
+        var e = new StandardItem("E");
+        yield return new AvaloniaGraphControl.Edge(a,b);
+        yield return new AvaloniaGraphControl.Edge(a,d);
+        yield return new AvaloniaGraphControl.Edge(a,e);
+        yield return new AvaloniaGraphControl.Edge(b,c);
+        yield return new AvaloniaGraphControl.Edge(b,d);
+        yield return new AvaloniaGraphControl.Edge(d,a);
+        yield return new AvaloniaGraphControl.Edge(d,e);
+      }
+    }
+
     public static Graph SimpleInteractiveGraph
     {
       get
@@ -86,6 +110,26 @@ namespace AvaloniaGraphControlSample
         foreach (var node in graph.Nodes)
           node.UserData = new InteractiveItem(node.Id);
         return graph;
+      }
+    }
+
+
+    public static IEnumerable<AvaloniaGraphControl.Edge> SimpleInteractiveGraphEdges
+    {
+      get
+      {
+        var a = new InteractiveItem("A");
+        var b = new InteractiveItem("B");
+        var c = new InteractiveItem("C");
+        var d = new InteractiveItem("D");
+        var e = new InteractiveItem("E");
+        yield return new AvaloniaGraphControl.Edge(a,b);
+        yield return new AvaloniaGraphControl.Edge(a,d);
+        yield return new AvaloniaGraphControl.Edge(a,e);
+        yield return new AvaloniaGraphControl.Edge(b,c);
+        yield return new AvaloniaGraphControl.Edge(b,d);
+        yield return new AvaloniaGraphControl.Edge(d,a);
+        yield return new AvaloniaGraphControl.Edge(d,e);
       }
     }
 
@@ -135,6 +179,46 @@ namespace AvaloniaGraphControlSample
           edge.Attr.ArrowheadAtTarget = ArrowStyle.None;
         }
         return graph;
+      }
+    }
+
+
+    public static IEnumerable<AvaloniaGraphControl.Edge> FamilyTreeEdges
+    {
+      get
+      {
+        var abraham = new Male("Abraham", "https://en.wikipedia.org/wiki/Grampa_Simpson");
+        var mona = new Female("Mona", "https://en.wikipedia.org/wiki/Mona_Simpson_(The_Simpsons)");
+        var homer = new Male("Homer", "https://en.wikipedia.org/wiki/Homer_Simpson");
+        var clancy = new Male("Clancy", "https://en.wikipedia.org/wiki/Simpson_family#Clancy_Bouvier");
+        var jackie = new Female("Jackie", "https://en.wikipedia.org/wiki/Simpson_family#Jacqueline_Bouvier");
+        var marge = new Female("Marge", "https://en.wikipedia.org/wiki/Marge_Simpson");
+        var patty = new Female("Patty", "https://en.wikipedia.org/wiki/Patty_and_Selma");
+        var selma = new Female("Selma", "https://en.wikipedia.org/wiki/Patty_and_Selma");
+        var ling = new Female("Ling", "https://en.wikipedia.org/wiki/Simpson_family#Ling_Bouvier");
+        var bart = new Male("Bart", "https://en.wikipedia.org/wiki/Bart_Simpson");
+        var lisa = new Female("Lisa", "https://en.wikipedia.org/wiki/Lisa_Simpson");
+        var maggie = new Female("Maggie", "https://en.wikipedia.org/wiki/Maggie_Simpson");
+        var f1 = new Family();
+        var f2 = new Family();
+        var f3 = new Family();
+        AvaloniaGraphControl.Edge CreateEdge(object x, object y) => new AvaloniaGraphControl.Edge(
+          x, y, tailSymbol: AvaloniaGraphControl.Edge.Symbol.None, headSymbol: AvaloniaGraphControl.Edge.Symbol.None
+        );
+        yield return CreateEdge(abraham,f1);
+        yield return CreateEdge(mona,f1);
+        yield return CreateEdge(f1, homer);
+        yield return CreateEdge(clancy,f2);
+        yield return CreateEdge(jackie,f2);
+        yield return CreateEdge(f2, marge);
+        yield return CreateEdge(f2, patty);
+        yield return CreateEdge(f2, selma);
+        yield return CreateEdge(homer, f3);
+        yield return CreateEdge(marge, f3);
+        yield return CreateEdge(f3, bart);
+        yield return CreateEdge(f3, lisa);
+        yield return CreateEdge(f3, maggie);
+        yield return CreateEdge(selma, ling);
       }
     }
 
