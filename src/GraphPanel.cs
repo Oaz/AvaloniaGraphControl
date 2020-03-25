@@ -71,38 +71,48 @@ namespace AvaloniaGraphControl
       Children.Clear();
       idGenerator = new ObjectIDGenerator();
       var edgeVMs = Edges.ToArray();
-      var nodeVMs = edgeVMs.Select(e => e.Head).Concat(edgeVMs.Select(e => e.Tail)).Distinct().Select(nvm => new NodeWrapper(nvm, idGenerator)).ToDictionary(nw => nw.Node, nw => nw);
+      var nodeVMs = edgeVMs.Select(e => e.Head).Concat(edgeVMs.Select(e => e.Tail)).Distinct().Select(nvm => new NodeWrapper(nvm, idGenerator)).ToDictionary(nw => nw.VM, nw => nw);
       var parentVMs = nodeVMs.Select(kv => Hierarchy(kv.Key)).Where(pvm => pvm != null).Distinct().Select(pvm => nodeVMs[pvm]).ToArray();
       var leafVMs = nodeVMs.Values.Except(parentVMs).ToArray();
       graph = new Microsoft.Msagl.Drawing.Graph();
       graph.LayoutAlgorithmSettings = CurrentLayoutSettings;
       graph.RootSubgraph.IsVisible = false;
+      vmOfCtrl = new Dictionary<IControl, Wrapper>();
       foreach (var evm in edgeVMs)
       {
         var dEdge = graph.AddEdge(nodeVMs[evm.Tail].ID, nodeVMs[evm.Head].ID);
         dEdge.Attr.ArrowheadAtSource = Edge.GetArrowStyle(evm.TailSymbol);
         dEdge.Attr.ArrowheadAtTarget = Edge.GetArrowStyle(evm.HeadSymbol);
+        dEdge.LabelText="x";
         evm.DEdge = dEdge;
-      }
-      graph.CreateGeometryGraph();
-      graph.GeometryGraph.RootCluster.RectangularBoundary = new Microsoft.Msagl.Core.Geometry.RectangularClusterBoundary();
-      foreach (var evm in edgeVMs)
-      {
         var ctrl = CreateControlForEdge(evm);
         ctrl.DataContext = evm;
         Children.Add(ctrl);
         ctrl.ZIndex = 1;
       }
-      nodeOfCtrl = new Dictionary<IControl, NodeWrapper>();
+      graph.CreateGeometryGraph();
+      graph.GeometryGraph.RootCluster.RectangularBoundary = new Microsoft.Msagl.Core.Geometry.RectangularClusterBoundary();
+
+      foreach (var evm in edgeVMs)
+      {
+        if (!evm.Label.Equals(string.Empty))
+        {
+          var lctrl = CreateControlForLabel(evm);
+          lctrl.DataContext = evm.Label;
+          Children.Add(lctrl);
+          lctrl.ZIndex = 2;
+          vmOfCtrl[lctrl] = new LabelWrapper(evm.Label, idGenerator, evm.DEdge.Label);
+        }
+      }
       foreach (var nvm in nodeVMs.Values)
       {
         var dNode = graph.FindNode(nvm.ID);
         nvm.DNode = dNode;
         var ctrl = CreateControlForNode(nvm);
-        ctrl.DataContext = nvm.Node;
+        ctrl.DataContext = nvm.VM;
         Children.Add(ctrl);
-        ctrl.ZIndex = 2;
-        nodeOfCtrl[ctrl] = nvm;
+        ctrl.ZIndex = 3;
+        vmOfCtrl[ctrl] = nvm;
       }
 
       //var subgraphs = RecurseInto(Source.RootSubgraph, sg => sg.Subgraphs).Select(sg => new NodeView(sg, Source)).ToList();
@@ -111,20 +121,46 @@ namespace AvaloniaGraphControl
 
     Microsoft.Msagl.Drawing.Graph graph;
     ObjectIDGenerator idGenerator;
-    Dictionary<IControl, NodeWrapper> nodeOfCtrl;
+    Dictionary<IControl, Wrapper> vmOfCtrl;
 
-    class NodeWrapper
+    abstract class Wrapper
     {
-      public NodeWrapper(object node, ObjectIDGenerator idGen)
+      public Wrapper(object vm, ObjectIDGenerator idGen)
       {
-        Node = node;
-        ID = idGen.GetId(node, out bool _).ToString();
+        VM = vm;
+        ID = idGen.GetId(vm, out bool _).ToString();
       }
-      public readonly object Node;
+      public readonly object VM;
       public readonly string ID;
+
+      internal abstract Microsoft.Msagl.Core.Geometry.Rectangle GetBoundingBox();
+      internal abstract void UpdateBounds(IControl ctrl);
+    }
+
+    class LabelWrapper : Wrapper
+    {
+      public LabelWrapper(object label, ObjectIDGenerator idGen, Microsoft.Msagl.Drawing.Label dLabel) : base(label, idGen)
+      {
+        DLabel = dLabel;
+      }
+
+      public readonly Microsoft.Msagl.Drawing.Label DLabel;
+      internal override Microsoft.Msagl.Core.Geometry.Rectangle GetBoundingBox() => DLabel.BoundingBox;
+      internal override void UpdateBounds(IControl ctrl)
+      {
+        DLabel.Width = ctrl.DesiredSize.Width;
+        DLabel.Height = ctrl.DesiredSize.Height;
+      }
+    }
+
+    class NodeWrapper : Wrapper
+    {
+      public NodeWrapper(object node, ObjectIDGenerator idGen) : base(node, idGen) { }
+
       public Microsoft.Msagl.Drawing.Node DNode { get; set; }
 
-      internal void UpdateBoundaryCurve(IControl ctrl)
+      internal override Microsoft.Msagl.Core.Geometry.Rectangle GetBoundingBox() => DNode.BoundingBox;
+      internal override void UpdateBounds(IControl ctrl)
       {
         var (shape, borderRadius) = ctrl is TextSticker ts ? (ts.Shape, ts.BorderRadius) : (TextSticker.Shapes.Rectangle, 0);
         DNode.GeometryNode.BoundaryCurve = AglCurveFactory.Create(shape, ctrl.DesiredSize, borderRadius);
@@ -133,13 +169,18 @@ namespace AvaloniaGraphControl
 
     private IControl CreateControlForNode(NodeWrapper nvm)
     {
-      var tpl = this.FindDataTemplate(nvm.Node);
-      return tpl == null ? new TextSticker { Text = nvm.Node.ToString() } : tpl.Build(nvm.Node);
+      var tpl = this.FindDataTemplate(nvm.VM);
+      return tpl == null ? new TextSticker { Text = nvm.VM.ToString() } : tpl.Build(nvm.VM);
     }
     private Connection CreateControlForEdge(Edge evm)
     {
       var tpl = this.FindDataTemplate(evm);
       return tpl == null ? new Connection() : (Connection)tpl.Build(evm);
+    }
+    private IControl CreateControlForLabel(Edge evm)
+    {
+      var tpl = this.FindDataTemplate(evm.Label);
+      return tpl == null ? new TextBlock { Text = evm.Label.ToString(), FontSize = 6 } : tpl.Build(evm.Label);
     }
     protected override Size MeasureOverride(Size constraint)
     {
@@ -148,8 +189,8 @@ namespace AvaloniaGraphControl
       foreach (var child in Children)
       {
         child.Measure(constraint);
-        if (nodeOfCtrl.TryGetValue(child, out NodeWrapper nvm))
-          nvm.UpdateBoundaryCurve(child);
+        if (vmOfCtrl.TryGetValue(child, out Wrapper w))
+          w.UpdateBounds(child);
       }
       var transformer = new AglToAvalonia(graph.BoundingBox.LeftTop);
       return transformer.Convert(graph.BoundingBox.Size);
@@ -173,8 +214,8 @@ namespace AvaloniaGraphControl
 
     private Microsoft.Msagl.Core.Geometry.Rectangle? GetBoundingBox(IControl ctrl)
     {
-      if (nodeOfCtrl.TryGetValue(ctrl, out NodeWrapper nw))
-        return nw.DNode.BoundingBox;
+      if (vmOfCtrl.TryGetValue(ctrl, out Wrapper w))
+        return w.GetBoundingBox();
       if (ctrl is Connection c)
         return ((Edge)c.DataContext).DEdge.BoundingBox;
       return null;

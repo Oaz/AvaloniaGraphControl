@@ -56,13 +56,22 @@ namespace AvaloniaGraphControlSample
   {
   }
 
+  class State
+  {
+    public State(string name) { Name = name; }
+    public string Name { get; private set; }
+  }
+  class InitialState
+  {
+  }
+
   class Model
   {
     public IEnumerable<NamedGraph> SampleGraphs => new NamedGraph[] {
       new NamedGraph {Name="Simple Graph", Graph=SimpleGraph, Edges=SimpleGraphEdges},
       new NamedGraph {Name="Simple Interactive Graph", Graph=SimpleInteractiveGraph, Edges=SimpleInteractiveGraphEdges},
       new NamedGraph {Name="Family Tree", Graph=FamilyTree, Edges=FamilyTreeEdges},
-      new NamedGraph {Name="State Machine", Graph=StateMachine}
+      new NamedGraph {Name="State Machine", Graph=StateMachine, Edges=StateMachineEdges}
     };
     public static Graph SimpleGraph
     {
@@ -92,13 +101,13 @@ namespace AvaloniaGraphControlSample
         var c = new StandardItem("C");
         var d = new StandardItem("D");
         var e = new StandardItem("E");
-        yield return new AvaloniaGraphControl.Edge(a,b);
-        yield return new AvaloniaGraphControl.Edge(a,d);
-        yield return new AvaloniaGraphControl.Edge(a,e);
-        yield return new AvaloniaGraphControl.Edge(b,c);
-        yield return new AvaloniaGraphControl.Edge(b,d);
-        yield return new AvaloniaGraphControl.Edge(d,a);
-        yield return new AvaloniaGraphControl.Edge(d,e);
+        yield return new AvaloniaGraphControl.Edge(a, b);
+        yield return new AvaloniaGraphControl.Edge(a, d);
+        yield return new AvaloniaGraphControl.Edge(a, e);
+        yield return new AvaloniaGraphControl.Edge(b, c);
+        yield return new AvaloniaGraphControl.Edge(b, d);
+        yield return new AvaloniaGraphControl.Edge(d, a);
+        yield return new AvaloniaGraphControl.Edge(d, e);
       }
     }
 
@@ -123,13 +132,13 @@ namespace AvaloniaGraphControlSample
         var c = new InteractiveItem("C");
         var d = new InteractiveItem("D");
         var e = new InteractiveItem("E");
-        yield return new AvaloniaGraphControl.Edge(a,b);
-        yield return new AvaloniaGraphControl.Edge(a,d);
-        yield return new AvaloniaGraphControl.Edge(a,e);
-        yield return new AvaloniaGraphControl.Edge(b,c);
-        yield return new AvaloniaGraphControl.Edge(b,d);
-        yield return new AvaloniaGraphControl.Edge(d,a);
-        yield return new AvaloniaGraphControl.Edge(d,e);
+        yield return new AvaloniaGraphControl.Edge(a, b);
+        yield return new AvaloniaGraphControl.Edge(a, d);
+        yield return new AvaloniaGraphControl.Edge(a, e);
+        yield return new AvaloniaGraphControl.Edge(b, c);
+        yield return new AvaloniaGraphControl.Edge(b, d);
+        yield return new AvaloniaGraphControl.Edge(d, a);
+        yield return new AvaloniaGraphControl.Edge(d, e);
       }
     }
 
@@ -205,11 +214,11 @@ namespace AvaloniaGraphControlSample
         AvaloniaGraphControl.Edge CreateEdge(object x, object y) => new AvaloniaGraphControl.Edge(
           x, y, tailSymbol: AvaloniaGraphControl.Edge.Symbol.None, headSymbol: AvaloniaGraphControl.Edge.Symbol.None
         );
-        yield return CreateEdge(abraham,f1);
-        yield return CreateEdge(mona,f1);
+        yield return CreateEdge(abraham, f1);
+        yield return CreateEdge(mona, f1);
         yield return CreateEdge(f1, homer);
-        yield return CreateEdge(clancy,f2);
-        yield return CreateEdge(jackie,f2);
+        yield return CreateEdge(clancy, f2);
+        yield return CreateEdge(jackie, f2);
         yield return CreateEdge(f2, marge);
         yield return CreateEdge(f2, patty);
         yield return CreateEdge(f2, selma);
@@ -298,6 +307,23 @@ namespace AvaloniaGraphControlSample
       }
     }
 
+    public static IEnumerable<AvaloniaGraphControl.Edge> StateMachineEdges
+    {
+      get
+      {
+        var initAvailable = new InitialState();
+        var paused = new State("Paused");
+        var starting = new State("Starting");
+        var started = new State("Started");
+        var pausing = new State("Pausing");
+        AvaloniaGraphControl.Edge CreateEdge(object x, object y, object label = null) => new AvaloniaGraphControl.Edge(x, y, label);
+        yield return CreateEdge(initAvailable, paused);
+        yield return CreateEdge(paused, starting, "Start");
+        yield return CreateEdge(starting, started, "StartingComplete");
+        yield return CreateEdge(started, pausing, "Pause");
+        yield return CreateEdge(pausing, paused, "PausingComplete");
+      }
+    }
     private static void With<T>(T t, Action<T> a) => a(t);
 
   }
