@@ -26,7 +26,7 @@
         </DataTemplate>
       </agc:GraphView.DataTemplates>
     </agc:GraphView>
-    <agc:GraphPanel Grid.Column="0" Grid.Row="2" Edges="{Binding SelectedItem.Edges, ElementName=graphs}" Zoom="{Binding Value, ElementName=zoomer}" LayoutMethod="{Binding SelectedItem, ElementName=layoutMethods}">
+    <agc:GraphPanel Grid.Column="0" Grid.Row="2" Edges="{Binding SelectedItem.Edges, ElementName=graphs}" Hierarchy="{Binding SelectedItem.Hierarchy, ElementName=graphs}"  Zoom="{Binding Value, ElementName=zoomer}" LayoutMethod="{Binding SelectedItem, ElementName=layoutMethods}">
       <agc:GraphPanel.DataTemplates>
         <DataTemplate DataType="{x:Type local:StandardItem}">
           <agc:TextSticker Text="{Binding Name}" Shape="Ellipse" Padding="30,10" />
@@ -45,6 +45,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type local:State}">
           <agc:TextSticker Text="{Binding Name}" Shape="RoundedRectangle" Padding="1,1" />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type local:CompositeState}">
+          <agc:TextSticker Text="{Binding Name}" Shape="RoundedRectangle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="1,1" />
         </DataTemplate>
         <DataTemplate DataType="{x:Type local:InitialState}">
           <Ellipse Width="10" Height="10" Fill="Black" />

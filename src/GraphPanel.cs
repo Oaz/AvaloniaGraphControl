@@ -54,6 +54,7 @@ namespace AvaloniaGraphControl
     static GraphPanel()
     {
       EdgesProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.ComputeGraphDrawing());
+      HierarchyProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.ComputeGraphDrawing());
       ZoomProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.RenderTransform = new ScaleTransform(gp.Zoom, gp.Zoom));
       LayoutMethodProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.ComputeGraphDrawing());
       AffectsMeasure<GraphPanel>(EdgesProperty, HierarchyProperty, LayoutMethodProperty);
@@ -68,6 +69,8 @@ namespace AvaloniaGraphControl
 
     private void ComputeGraphDrawing()
     {
+      if (Edges == null)
+        return;
       Children.Clear();
       idGenerator = new ObjectIDGenerator();
       var edgeVMs = Edges.ToArray();
@@ -78,6 +81,19 @@ namespace AvaloniaGraphControl
       graph.LayoutAlgorithmSettings = CurrentLayoutSettings;
       graph.RootSubgraph.IsVisible = false;
       vmOfCtrl = new Dictionary<IControl, Wrapper>();
+      foreach (var sgvm in parentVMs)
+      {
+        var sg = new Microsoft.Msagl.Drawing.Subgraph(sgvm.ID);
+        sgvm.DNode = sg;
+        var ctrl = CreateControl(sgvm.VM, n => new TextSticker
+        {
+          Text = n.ToString(),
+          HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch,
+          VerticalAlignment = Avalonia.Layout.VerticalAlignment.Stretch
+        }, 3);
+        vmOfCtrl[ctrl] = sgvm;
+        graph.RootSubgraph.AddSubgraph(sg);
+      }
       foreach (var evm in edgeVMs)
       {
         var dEdge = graph.AddEdge(nodeVMs[evm.Tail].ID, nodeVMs[evm.Head].ID);
@@ -86,6 +102,19 @@ namespace AvaloniaGraphControl
         dEdge.LabelText = "x";
         evm.DEdge = dEdge;
         CreateControl(evm, _ => new Connection(), 1);
+      }
+      foreach (var nvm in leafVMs)
+      {
+        var dNode = graph.FindNode(nvm.ID);
+        nvm.DNode = dNode;
+        var ctrl = CreateControl(nvm.VM, n => new TextSticker { Text = n.ToString() }, 4);
+        vmOfCtrl[ctrl] = nvm;
+        var parent = Hierarchy(nvm.VM);
+        if (parent != null)
+        {
+          var pw = nodeVMs[parent];
+          ((Microsoft.Msagl.Drawing.Subgraph)pw.DNode).AddNode(dNode);
+        }
       }
       graph.CreateGeometryGraph();
       graph.GeometryGraph.RootCluster.RectangularBoundary = new Microsoft.Msagl.Core.Geometry.RectangularClusterBoundary();
@@ -98,16 +127,7 @@ namespace AvaloniaGraphControl
           vmOfCtrl[ctrl] = new LabelWrapper(evm.Label, idGenerator, evm.DEdge.Label);
         }
       }
-      foreach (var nvm in nodeVMs.Values)
-      {
-        var dNode = graph.FindNode(nvm.ID);
-        nvm.DNode = dNode;
-        var ctrl = CreateControl(nvm.VM, n => new TextSticker { Text = n.ToString() }, 3);
-        vmOfCtrl[ctrl] = nvm;
-      }
 
-      //var subgraphs = RecurseInto(Source.RootSubgraph, sg => sg.Subgraphs).Select(sg => new NodeView(sg, Source)).ToList();
-      //Children.AddRange(subgraphs);
     }
 
     private IControl CreateControl(object vm, Func<object, IControl> getDefault, int zIndex)
@@ -163,6 +183,8 @@ namespace AvaloniaGraphControl
       internal override Microsoft.Msagl.Core.Geometry.Rectangle GetBoundingBox() => DNode.BoundingBox;
       internal override void UpdateBounds(IControl ctrl)
       {
+        if (DNode.GeometryNode == null)
+          return;
         var (shape, borderRadius) = ctrl is TextSticker ts ? (ts.Shape, ts.BorderRadius) : (TextSticker.Shapes.Rectangle, 0);
         DNode.GeometryNode.BoundaryCurve = AglCurveFactory.Create(shape, ctrl.DesiredSize, borderRadius);
       }
@@ -193,7 +215,8 @@ namespace AvaloniaGraphControl
         var bbox = GetBoundingBox(child);
         if (!bbox.HasValue)
           continue;
-        child.Arrange(a2a.Convert(bbox.Value));
+        var childFinalSize = a2a.Convert(bbox.Value);
+        child.Arrange(childFinalSize);
       }
       return finalSize;
     }
@@ -205,12 +228,6 @@ namespace AvaloniaGraphControl
       if (ctrl is Connection c)
         return ((Edge)c.DataContext).DEdge.BoundingBox;
       return null;
-    }
-
-    private static IEnumerable<T> RecurseInto<T>(T parent, Func<T, IEnumerable<T>> getChildren)
-    {
-      var children = getChildren(parent).SelectMany(c => RecurseInto(c, getChildren));
-      return children.Prepend(parent);
     }
 
     private Microsoft.Msagl.Core.Layout.LayoutAlgorithmSettings CurrentLayoutSettings =>
