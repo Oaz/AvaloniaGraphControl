@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Avalonia.Media;
-using Microsoft.Msagl.Drawing;
+using AvaloniaGraphControl;
 
 namespace AvaloniaGraphControlSample
 {
@@ -12,8 +12,7 @@ namespace AvaloniaGraphControlSample
       Hierarchy = _ => null;
     }
     public string Name { get; set; }
-    public Graph Graph { get; set; }
-    public (IEnumerable<AvaloniaGraphControl.Edge>, Func<object, object>) Definition
+    public (IEnumerable<Edge>, Func<object, object>) Definition
     {
       set
       {
@@ -21,7 +20,7 @@ namespace AvaloniaGraphControlSample
         Hierarchy = value.Item2;
       }
     }
-    public IEnumerable<AvaloniaGraphControl.Edge> Edges { get; set; }
+    public IEnumerable<Edge> Edges { get; set; }
     public Func<object, object> Hierarchy { get; set; }
     public override string ToString() => Name;
   }
@@ -39,10 +38,10 @@ namespace AvaloniaGraphControlSample
 
   class FamilyMember
   {
-    public FamilyMember(string name, Avalonia.Media.Color backgroungColor, string url)
+    public FamilyMember(string name, IBrush backgroungColor, string url)
     {
       Name = name;
-      BackgroundColor = new Avalonia.Media.SolidColorBrush(backgroungColor);
+      BackgroundColor = backgroungColor;
       URL = url;
     }
 
@@ -54,17 +53,17 @@ namespace AvaloniaGraphControlSample
         System.Diagnostics.Process.Start(URL);
     }
     public string Name { get; private set; }
-    public Avalonia.Media.IBrush BackgroundColor { get; private set; }
+    public IBrush BackgroundColor { get; private set; }
     public string URL { get; private set; }
   }
 
   class Male : FamilyMember
   {
-    public Male(string name, string url) : base(name, Avalonia.Media.Colors.LightSkyBlue, url) { }
+    public Male(string name, string url) : base(name, Brushes.LightSkyBlue, url) { }
   }
   class Female : FamilyMember
   {
-    public Female(string name, string url) : base(name, Avalonia.Media.Colors.LightPink, url) { }
+    public Female(string name, string url) : base(name, Brushes.LightPink, url) { }
   }
   class Family
   {
@@ -95,7 +94,7 @@ namespace AvaloniaGraphControlSample
       new NamedGraph {Name="State Machine", Definition=StateMachineEdges}
     };
 
-    public static (IEnumerable<AvaloniaGraphControl.Edge>, Func<object, object>) SimpleGraphEdges
+    public static (IEnumerable<Edge>, Func<object, object>) SimpleGraphEdges
     {
       get
       {
@@ -104,19 +103,19 @@ namespace AvaloniaGraphControlSample
         var c = new StandardItem("C");
         var d = new StandardItem("D");
         var e = new StandardItem("E");
-        var edges = new List<AvaloniaGraphControl.Edge>();
-        edges.Add(new AvaloniaGraphControl.Edge(a, b));
-        edges.Add(new AvaloniaGraphControl.Edge(a, d));
-        edges.Add(new AvaloniaGraphControl.Edge(a, e));
-        edges.Add(new AvaloniaGraphControl.Edge(b, c));
-        edges.Add(new AvaloniaGraphControl.Edge(b, d));
-        edges.Add(new AvaloniaGraphControl.Edge(d, a));
-        edges.Add(new AvaloniaGraphControl.Edge(d, e));
+        var edges = new List<Edge>();
+        edges.Add(new Edge(a, b));
+        edges.Add(new Edge(a, d));
+        edges.Add(new Edge(a, e));
+        edges.Add(new Edge(b, c));
+        edges.Add(new Edge(b, d));
+        edges.Add(new Edge(d, a));
+        edges.Add(new Edge(d, e));
         return (edges, _ => null);
       }
     }
 
-    public static (IEnumerable<AvaloniaGraphControl.Edge>, Func<object, object>) SimpleInteractiveGraphEdges
+    public static (IEnumerable<Edge>, Func<object, object>) SimpleInteractiveGraphEdges
     {
       get
       {
@@ -125,19 +124,19 @@ namespace AvaloniaGraphControlSample
         var c = new InteractiveItem("C");
         var d = new InteractiveItem("D");
         var e = new InteractiveItem("E");
-        var edges = new List<AvaloniaGraphControl.Edge>();
-        edges.Add(new AvaloniaGraphControl.Edge(a, b));
-        edges.Add(new AvaloniaGraphControl.Edge(a, d));
-        edges.Add(new AvaloniaGraphControl.Edge(a, e));
-        edges.Add(new AvaloniaGraphControl.Edge(b, c));
-        edges.Add(new AvaloniaGraphControl.Edge(b, d));
-        edges.Add(new AvaloniaGraphControl.Edge(d, a));
-        edges.Add(new AvaloniaGraphControl.Edge(d, e));
+        var edges = new List<Edge>();
+        edges.Add(new Edge(a, b));
+        edges.Add(new Edge(a, d));
+        edges.Add(new Edge(a, e));
+        edges.Add(new Edge(b, c));
+        edges.Add(new Edge(b, d));
+        edges.Add(new Edge(d, a));
+        edges.Add(new Edge(d, e));
         return (edges, _ => null);
       }
     }
 
-    public static (IEnumerable<AvaloniaGraphControl.Edge>, Func<object, object>) FamilyTreeEdges
+    public static (IEnumerable<Edge>, Func<object, object>) FamilyTreeEdges
     {
       get
       {
@@ -156,10 +155,10 @@ namespace AvaloniaGraphControlSample
         var f1 = new Family();
         var f2 = new Family();
         var f3 = new Family();
-        AvaloniaGraphControl.Edge CreateEdge(object x, object y) => new AvaloniaGraphControl.Edge(
-          x, y, tailSymbol: AvaloniaGraphControl.Edge.Symbol.None, headSymbol: AvaloniaGraphControl.Edge.Symbol.None
+        AvaloniaGraphControl.Edge CreateEdge(object x, object y) => new Edge(
+          x, y, tailSymbol: Edge.Symbol.None, headSymbol: Edge.Symbol.None
         );
-        var edges = new List<AvaloniaGraphControl.Edge>();
+        var edges = new List<Edge>();
         edges.Add(CreateEdge(abraham, f1));
         edges.Add(CreateEdge(mona, f1));
         edges.Add(CreateEdge(f1, homer));
@@ -178,7 +177,7 @@ namespace AvaloniaGraphControlSample
       }
     }
 
-    public static (IEnumerable<AvaloniaGraphControl.Edge>, Func<object, object>) StateMachineEdges
+    public static (IEnumerable<Edge>, Func<object, object>) StateMachineEdges
     {
       get
       {
@@ -194,8 +193,8 @@ namespace AvaloniaGraphControlSample
         var starting = new State("Starting",Brushes.Yellow);
         var started = new State("Started",Brushes.Yellow);
         var pausing = new State("Pausing",Brushes.Yellow);
-        AvaloniaGraphControl.Edge CreateEdge(object x, object y, object label = null) => new AvaloniaGraphControl.Edge(x, y, label);
-        var edges = new List<AvaloniaGraphControl.Edge>();
+        AvaloniaGraphControl.Edge CreateEdge(object x, object y, object label = null) => new Edge(x, y, label);
+        var edges = new List<Edge>();
         edges.Add(CreateEdge(initMain, off));
         edges.Add(CreateEdge(off, on, "SwitchOn"));
         edges.Add(CreateEdge(on, cleaning, "SwitchOff"));
@@ -220,8 +219,6 @@ namespace AvaloniaGraphControlSample
         return (edges, x => parent.GetValueOrDefault(x));
       }
     }
-
-    private static void With<T>(T t, Action<T> a) => a(t);
 
   }
 }
