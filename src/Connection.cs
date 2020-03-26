@@ -38,7 +38,7 @@ namespace AvaloniaGraphControl
         Drawings.Add(FigureToDrawing(CreateArrowHeadFigure(dEdge.EdgeCurve.End, dEdge.ArrowAtTargetPosition, a2a), Brush, Brush));
       if (edge.TailSymbol == Edge.Symbol.Arrow)
         Drawings.Add(FigureToDrawing(CreateArrowHeadFigure(dEdge.EdgeCurve.Start, dEdge.ArrowAtSourcePosition, a2a), Brush, Brush));
-      return a2a.Convert(box.Size);
+      return AglToAvalonia.Convert(box.Size);
     }
     public override void Render(DrawingContext context)
     {

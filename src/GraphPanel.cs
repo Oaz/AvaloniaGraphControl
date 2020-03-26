@@ -205,15 +205,15 @@ namespace AvaloniaGraphControl
         if (vmOfCtrl.TryGetValue(child, out Wrapper w))
           w.UpdateBounds(child);
       }
-      var transformer = new AglToAvalonia(graph.BoundingBox.LeftTop);
-      return transformer.Convert(graph.BoundingBox.Size);
+      Microsoft.Msagl.Miscellaneous.LayoutHelpers.CalculateLayout(graph.GeometryGraph, graph.LayoutAlgorithmSettings, null);
+      var graphDesiredSize = AglToAvalonia.Convert(graph.BoundingBox.Size);
+      return graphDesiredSize;
     }
 
     protected override Size ArrangeOverride(Size finalSize)
     {
       if (Edges == null)
         return finalSize;
-      Microsoft.Msagl.Miscellaneous.LayoutHelpers.CalculateLayout(graph.GeometryGraph, graph.LayoutAlgorithmSettings, null);
       var a2a = new AglToAvalonia(graph.BoundingBox.LeftTop);
       foreach (var child in Children)
       {
@@ -223,7 +223,8 @@ namespace AvaloniaGraphControl
         var childFinalSize = a2a.Convert(bbox.Value);
         child.Arrange(childFinalSize);
       }
-      return finalSize;
+      var graphSize = AglToAvalonia.Convert(graph.BoundingBox.Size);
+      return graphSize;
     }
 
     private Microsoft.Msagl.Core.Geometry.Rectangle? GetBoundingBox(IControl ctrl)

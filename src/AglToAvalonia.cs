@@ -22,7 +22,7 @@ namespace AvaloniaGraphControl
       return new Point(pt.X - origin.X, origin.Y - pt.Y);
     }
 
-    public Size Convert(Microsoft.Msagl.Core.DataStructures.Size size)
+    public static Size Convert(Microsoft.Msagl.Core.DataStructures.Size size)
     {
       return new Size(size.Width, size.Height);
     }
