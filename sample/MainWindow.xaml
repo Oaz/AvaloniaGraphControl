@@ -4,7 +4,7 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
   xmlns:agc="clr-namespace:AvaloniaGraphControl;assembly=AvaloniaGraphControl" 
   xmlns:local="clr-namespace:AvaloniaGraphControlSample;assembly=AvaloniaGraphControlSample" mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" Width="800" Height="700" x:Class="AvaloniaGraphControlSample.MainWindow" Title="AvaloniaGraphControlSample">
-  <Grid ColumnDefinitions="1*" RowDefinitions="25,1*,1*">
+  <Grid ColumnDefinitions="1*" RowDefinitions="25,1*">
     <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
       <TextBlock>Select Graph:</TextBlock>
       <ComboBox Name="graphs" Items="{Binding SampleGraphs}"/>
@@ -13,20 +13,7 @@
       <TextBlock>Select Layout Method:</TextBlock>
       <ComboBox Name="layoutMethods" />
     </StackPanel>
-    <agc:GraphView Grid.Column="0" Grid.Row="1" Source="{Binding SelectedItem.Graph, ElementName=graphs}" Zoom="{Binding Value, ElementName=zoomer}" LayoutMethod="{Binding SelectedItem, ElementName=layoutMethods}">
-      <agc:GraphView.DataTemplates>
-        <DataTemplate DataType="{x:Type local:StandardItem}">
-          <agc:TextSticker Text="{Binding Name}" Shape="Ellipse" Padding="30,10" />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type local:InteractiveItem}">
-          <ToggleButton Content="{Binding Name}" Padding="20,5" />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type local:FamilyMember}">
-          <Button Content="{Binding Name}" Background="{Binding BackgroundColor}" Command="{Binding Navigate}" />
-        </DataTemplate>
-      </agc:GraphView.DataTemplates>
-    </agc:GraphView>
-    <agc:GraphPanel Grid.Column="0" Grid.Row="2" Edges="{Binding SelectedItem.Edges, ElementName=graphs}" Hierarchy="{Binding SelectedItem.Hierarchy, ElementName=graphs}"  Zoom="{Binding Value, ElementName=zoomer}" LayoutMethod="{Binding SelectedItem, ElementName=layoutMethods}">
+    <agc:GraphPanel Grid.Column="0" Grid.Row="1" Edges="{Binding SelectedItem.Edges, ElementName=graphs}" Hierarchy="{Binding SelectedItem.Hierarchy, ElementName=graphs}"  Zoom="{Binding Value, ElementName=zoomer}" LayoutMethod="{Binding SelectedItem, ElementName=layoutMethods}">
       <agc:GraphPanel.DataTemplates>
         <DataTemplate DataType="{x:Type local:StandardItem}">
           <agc:TextSticker Text="{Binding Name}" Shape="Ellipse" Padding="30,10" />
