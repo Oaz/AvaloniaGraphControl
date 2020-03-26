@@ -53,10 +53,10 @@ namespace AvaloniaGraphControl
 
     static GraphPanel()
     {
-      EdgesProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.ComputeGraphDrawing());
-      HierarchyProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.ComputeGraphDrawing());
+      EdgesProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.CreateMSAGLGraphAndPopulatePanelWithAssociatedControls());
+      HierarchyProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.CreateMSAGLGraphAndPopulatePanelWithAssociatedControls());
       ZoomProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.RenderTransform = new ScaleTransform(gp.Zoom, gp.Zoom));
-      LayoutMethodProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.ComputeGraphDrawing());
+      LayoutMethodProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.CreateMSAGLGraphAndPopulatePanelWithAssociatedControls());
       AffectsMeasure<GraphPanel>(EdgesProperty, HierarchyProperty, LayoutMethodProperty);
       AffectsRender<GraphPanel>(ZoomProperty);
     }
@@ -67,7 +67,7 @@ namespace AvaloniaGraphControl
       Hierarchy = x => null;
     }
 
-    private void ComputeGraphDrawing()
+    private void CreateMSAGLGraphAndPopulatePanelWithAssociatedControls()
     {
       if (Edges == null)
         return;
@@ -90,9 +90,14 @@ namespace AvaloniaGraphControl
           Text = n.ToString(),
           HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch,
           VerticalAlignment = Avalonia.Layout.VerticalAlignment.Stretch
-        }, 3);
+        }, 1);
         vmOfCtrl[ctrl] = sgvm;
-        graph.RootSubgraph.AddSubgraph(sg);
+      }
+      foreach (var sgvm in parentVMs)
+      {
+        var parent = Hierarchy(sgvm.VM);
+        var pGraph = (parent == null) ? graph.RootSubgraph : (Microsoft.Msagl.Drawing.Subgraph)nodeVMs[parent].DNode;
+        pGraph.AddSubgraph((Microsoft.Msagl.Drawing.Subgraph)sgvm.DNode);
       }
       foreach (var evm in edgeVMs)
       {
@@ -101,7 +106,7 @@ namespace AvaloniaGraphControl
         dEdge.Attr.ArrowheadAtTarget = Edge.GetArrowStyle(evm.HeadSymbol);
         dEdge.LabelText = "x";
         evm.DEdge = dEdge;
-        CreateControl(evm, _ => new Connection(), 1);
+        CreateControl(evm, _ => new Connection(), 2);
       }
       foreach (var nvm in leafVMs)
       {
@@ -123,7 +128,7 @@ namespace AvaloniaGraphControl
       {
         if (!evm.Label.Equals(string.Empty))
         {
-          var ctrl = CreateControl(evm.Label, l => new TextBlock { Text = l.ToString(), FontSize = 6 }, 2);
+          var ctrl = CreateControl(evm.Label, l => new TextBlock { Text = l.ToString(), FontSize = 6 }, 3);
           vmOfCtrl[ctrl] = new LabelWrapper(evm.Label, idGenerator, evm.DEdge.Label);
         }
       }

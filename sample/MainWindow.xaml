@@ -44,10 +44,10 @@
           </Canvas>
         </DataTemplate>
         <DataTemplate DataType="{x:Type local:State}">
-          <agc:TextSticker Text="{Binding Name}" Shape="RoundedRectangle" Padding="1,1" />
+          <agc:TextSticker Text="{Binding Name}" Background="{Binding Color}" Shape="RoundedRectangle" Padding="1,1" />
         </DataTemplate>
         <DataTemplate DataType="{x:Type local:CompositeState}">
-          <agc:TextSticker Text="{Binding Name}" Shape="RoundedRectangle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="1,1" />
+          <agc:TextSticker Text="{Binding Name}" Background="{Binding Color}" Shape="RoundedRectangle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="1,1" />
         </DataTemplate>
         <DataTemplate DataType="{x:Type local:InitialState}">
           <Ellipse Width="10" Height="10" Fill="Black" />

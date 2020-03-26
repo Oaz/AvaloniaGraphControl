@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Avalonia.Media;
 using Microsoft.Msagl.Drawing;
 
 namespace AvaloniaGraphControlSample
@@ -71,16 +72,18 @@ namespace AvaloniaGraphControlSample
 
   class State
   {
-    public State(string name) { Name = name; }
+    public State(string name, IBrush color) { Name = name; Color = color; }
     public string Name { get; private set; }
+    public IBrush Color { get; private set; }
   }
   class InitialState
   {
   }
   class CompositeState
   {
-    public CompositeState(string name) { Name = name; }
+    public CompositeState(string name, IBrush color) { Name = name; Color = color; }
     public string Name { get; private set; }
+    public IBrush Color { get; private set; }
   }
 
   class Model
@@ -190,7 +193,7 @@ namespace AvaloniaGraphControlSample
           if (node.LabelText.StartsWith("f"))
           {
             node.LabelText = string.Empty;
-            node.Attr.FillColor = Color.Gray;
+            node.Attr.FillColor = Microsoft.Msagl.Drawing.Color.Gray;
           }
         }
         graph.FindNode("Abraham").UserData = new Male("Abraham", "https://en.wikipedia.org/wiki/Grampa_Simpson");
@@ -263,15 +266,15 @@ namespace AvaloniaGraphControlSample
         graph.RootSubgraph.IsVisible = false;
 
         var mainGraph = new Subgraph("State Machine");
-        mainGraph.Attr.FillColor = Color.LightGray;
+        mainGraph.Attr.FillColor = Microsoft.Msagl.Drawing.Color.LightGray;
         graph.RootSubgraph.AddSubgraph(mainGraph);
 
         var onGraph = new Subgraph("On");
-        onGraph.Attr.FillColor = Color.LightSkyBlue;
+        onGraph.Attr.FillColor = Microsoft.Msagl.Drawing.Color.LightSkyBlue;
         mainGraph.AddSubgraph(onGraph);
 
         var availableGraph = new Subgraph("Available");
-        availableGraph.Attr.FillColor = Color.LightGreen;
+        availableGraph.Attr.FillColor = Microsoft.Msagl.Drawing.Color.LightGreen;
         onGraph.AddSubgraph(availableGraph);
 
         void SetInitialNode(Subgraph sugbgraph, string nodeID)
@@ -281,11 +284,11 @@ namespace AvaloniaGraphControlSample
             sugbgraph.AddNode(n);
             n.Label.Text = string.Empty;
             n.Label.IsVisible = false;
-            n.Attr.FillColor = Color.Black;
+            n.Attr.FillColor = Microsoft.Msagl.Drawing.Color.Black;
             n.Attr.Shape = Shape.Circle;
           });
         }
-        void SetRegularNode(Subgraph subgraph, Color color, string nodeID)
+        void SetRegularNode(Subgraph subgraph, Microsoft.Msagl.Drawing.Color color, string nodeID)
         {
           With(graph.FindNode(nodeID), n =>
           {
@@ -300,7 +303,7 @@ namespace AvaloniaGraphControlSample
         graph.AddEdge("Started", "Pausing").LabelText = "Pause";
         graph.AddEdge("Pausing", "Paused").LabelText = "PausingComplete";
         SetInitialNode(availableGraph, "initAvailable");
-        void SetAvailableNode(string nodeID) => SetRegularNode(availableGraph, Color.Yellow, nodeID);
+        void SetAvailableNode(string nodeID) => SetRegularNode(availableGraph, Microsoft.Msagl.Drawing.Color.Yellow, nodeID);
         SetAvailableNode("Paused");
         SetAvailableNode("Starting");
         SetAvailableNode("Started");
@@ -310,7 +313,7 @@ namespace AvaloniaGraphControlSample
         graph.AddEdge(availableGraph.Id, "Failure").LabelText = "FailureDetected";
         graph.AddEdge("Failure", availableGraph.Id).LabelText = "Reset";
         SetInitialNode(onGraph, "initOn");
-        void SetOnNode(string nodeID) => SetRegularNode(onGraph, Color.LimeGreen, nodeID);
+        void SetOnNode(string nodeID) => SetRegularNode(onGraph, Microsoft.Msagl.Drawing.Color.LimeGreen, nodeID);
         SetOnNode("Failure");
 
         graph.AddEdge("initMain", "Off");
@@ -318,7 +321,7 @@ namespace AvaloniaGraphControlSample
         graph.AddEdge(onGraph.Id, "Cleaning").LabelText = "SwitchOff";
         graph.AddEdge("Cleaning", "Off").LabelText = "CleaningComplete";
         SetInitialNode(mainGraph, "initMain");
-        void SetMainNode(string nodeID) => SetRegularNode(mainGraph, Color.CornflowerBlue, nodeID);
+        void SetMainNode(string nodeID) => SetRegularNode(mainGraph, Microsoft.Msagl.Drawing.Color.CornflowerBlue, nodeID);
         SetMainNode("Off");
         SetMainNode("Cleaning");
 
@@ -335,16 +338,24 @@ namespace AvaloniaGraphControlSample
     {
       get
       {
+        var initMain = new InitialState();
+        var on = new CompositeState("On",Brushes.LightSkyBlue);
+        var off = new State("Off",Brushes.CornflowerBlue);
+        var cleaning = new State("Cleaning",Brushes.CornflowerBlue);
         var initOn = new InitialState();
-        var available = new CompositeState("Available");
-        var failure = new State("Failure");
+        var available = new CompositeState("Available",Brushes.LightGreen);
+        var failure = new State("Failure",Brushes.LimeGreen);
         var initAvailable = new InitialState();
-        var paused = new State("Paused");
-        var starting = new State("Starting");
-        var started = new State("Started");
-        var pausing = new State("Pausing");
+        var paused = new State("Paused",Brushes.Yellow);
+        var starting = new State("Starting",Brushes.Yellow);
+        var started = new State("Started",Brushes.Yellow);
+        var pausing = new State("Pausing",Brushes.Yellow);
         AvaloniaGraphControl.Edge CreateEdge(object x, object y, object label = null) => new AvaloniaGraphControl.Edge(x, y, label);
         var edges = new List<AvaloniaGraphControl.Edge>();
+        edges.Add(CreateEdge(initMain, off));
+        edges.Add(CreateEdge(off, on, "SwitchOn"));
+        edges.Add(CreateEdge(on, cleaning, "SwitchOff"));
+        edges.Add(CreateEdge(cleaning, off, "CleaningComplete"));
         edges.Add(CreateEdge(initOn, available));
         edges.Add(CreateEdge(available, failure, "FailureDetected"));
         edges.Add(CreateEdge(failure, available, "Reset"));
@@ -354,6 +365,9 @@ namespace AvaloniaGraphControlSample
         edges.Add(CreateEdge(started, pausing, "Pause"));
         edges.Add(CreateEdge(pausing, paused, "PausingComplete"));
         var parent = new Dictionary<object, object>();
+        parent[initOn] = on;
+        parent[available] = on;
+        parent[failure] = on;
         parent[initAvailable] = available;
         parent[paused] = available;
         parent[starting] = available;
