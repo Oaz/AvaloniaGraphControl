@@ -1,45 +1,40 @@
 # AvaloniaGraphControl
-A Graph display control for AvaloniaUI with model based on MSAGL
+A graph layout panel for AvaloniaUI
 
 ## Usage
-Each individual graph is displayed through the GraphView control included in the assembly
+Each individual graph is displayed through the GraphPanel control included in the assembly
 ```xml
 <Window xmlns:agc="clr-namespace:AvaloniaGraphControl;assembly=AvaloniaGraphControl">
-    <agc:GraphView Source="{Binding MyGraph}" Zoom="1.2" LayoutMethod="SugiyamaScheme" />
+    <agc:GraphPanel Graph="{Binding MyGraph}" Zoom="1.2" LayoutMethod="SugiyamaScheme" />
 </Window>
 ```
-The `Source` property is bound to a `Microsoft.Msagl.Drawing.Graph` instance from [MSAGL (Microsoft Automatic Graph Layout)](https://github.com/microsoft/automatic-graph-layout). Please have a look at this project for all information related to graph definition.
 
-The following layout methods are available in MSAGL and can be set in the GraphView control independently of the graph model:
+The layout is internally implemented with [MSAGL (Microsoft Automatic Graph Layout)](https://github.com/microsoft/automatic-graph-layout).
+
+The following layout methods are available in MSAGL and can be set in the GraphPanel control independently of the graph model:
 * [SugiyamaScheme](https://en.wikipedia.org/wiki/Layered_graph_drawing)
 * [MDS](https://en.wikipedia.org/wiki/Stress_majorization)
 * Ranking
 * IncrementalLayout
 
-The Graphview control and the MSAGL assemblies are bundled in [a nuget package](https://www.nuget.org/packages/AvaloniaGraphControl/).
-The existing MSAGL nuget packages are dedicated to the .NET Framework and do not include any netstandard assembly. 
+The GraphPanel control and the MSAGL assemblies are bundled in [a nuget package](https://www.nuget.org/packages/AvaloniaGraphControl/).
+The existing MSAGL nuget packages are dedicated to the .NET Framework and do not include any netstandard assembly.
 
 ## Example of graph definition
 
 ```C#
-public static Microsoft.Msagl.Drawing.Graph MyGraph
+public static Graph MyGraph
 {
   get
   {
-    var graph = new Microsoft.Msagl.Drawing.Graph("graph");
-    graph.AddEdge("A", "B");
-    graph.AddEdge("A", "D");
-    graph.AddEdge("A", "E");
-    graph.AddEdge("B", "C");
-    graph.AddEdge("B", "D");
-    graph.AddEdge("D", "A");
-    graph.AddEdge("D", "E");
-    graph.LayerConstraints.AddUpDownConstraint(graph.FindNode("A"), graph.FindNode("D"));
-    foreach (var node in graph.Nodes)
-    {
-      node.Attr.Shape = Shape.Ellipse;
-      node.LabelText = "   " + node.LabelText + "   ";
-    }
+    var graph = new Graph();
+    graph.Edges.Add(new Edge("A", "B"));
+    graph.Edges.Add(new Edge("A", "D"));
+    graph.Edges.Add(new Edge("A", "E"));
+    graph.Edges.Add(new Edge("B", "C"));
+    graph.Edges.Add(new Edge("B", "D"));
+    graph.Edges.Add(new Edge("D", "A"));
+    graph.Edges.Add(new Edge("D", "E"));
     return graph;
   }
 }
