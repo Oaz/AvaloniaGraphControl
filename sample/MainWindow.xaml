@@ -13,7 +13,7 @@
       <TextBlock>Select Layout Method:</TextBlock>
       <ComboBox Name="layoutMethods" />
     </StackPanel>
-    <agc:GraphPanel Grid.Column="0" Grid.Row="1" Background="WhiteSmoke" Edges="{Binding SelectedItem.Edges, ElementName=graphs}" Hierarchy="{Binding SelectedItem.Hierarchy, ElementName=graphs}" Zoom="{Binding Value, ElementName=zoomer}" LayoutMethod="{Binding SelectedItem, ElementName=layoutMethods}">
+    <agc:GraphPanel Grid.Column="0" Grid.Row="1" Background="WhiteSmoke" Graph="{Binding SelectedItem, ElementName=graphs}" Zoom="{Binding Value, ElementName=zoomer}" LayoutMethod="{Binding SelectedItem, ElementName=layoutMethods}">
       <agc:GraphPanel.DataTemplates>
         <DataTemplate DataType="{x:Type local:StandardItem}">
           <agc:TextSticker Text="{Binding Name}" Shape="Ellipse" Padding="30,10" />

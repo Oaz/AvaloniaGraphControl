@@ -12,19 +12,12 @@ namespace AvaloniaGraphControl
 {
   public class GraphPanel : Panel
   {
-    public static readonly StyledProperty<IEnumerable<Edge>> EdgesProperty = AvaloniaProperty.Register<GraphPanel, IEnumerable<Edge>>(nameof(Edges));
+    public static readonly StyledProperty<Graph> GraphProperty = AvaloniaProperty.Register<GraphPanel, Graph>(nameof(Graph));
 
-    public IEnumerable<Edge> Edges
+    public Graph Graph
     {
-      get { return GetValue(EdgesProperty); }
-      set { SetValue(EdgesProperty, value); }
-    }
-    public static readonly StyledProperty<Func<object, object>> HierarchyProperty = AvaloniaProperty.Register<GraphPanel, Func<object, object>>(nameof(Hierarchy));
-
-    public Func<object, object> Hierarchy
-    {
-      get { return GetValue(HierarchyProperty); }
-      set { SetValue(HierarchyProperty, value); }
+      get { return GetValue(GraphProperty); }
+      set { SetValue(GraphProperty, value); }
     }
 
     public static readonly StyledProperty<double> ZoomProperty = AvaloniaProperty.Register<GraphPanel, double>(nameof(Zoom), 1.0);
@@ -53,32 +46,32 @@ namespace AvaloniaGraphControl
 
     static GraphPanel()
     {
-      EdgesProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.CreateMSAGLGraphAndPopulatePanelWithAssociatedControls());
-      HierarchyProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.CreateMSAGLGraphAndPopulatePanelWithAssociatedControls());
+      GraphProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.CreateMSAGLGraphAndPopulatePanelWithAssociatedControls());
       ZoomProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.RenderTransform = new ScaleTransform(gp.Zoom, gp.Zoom));
       LayoutMethodProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.CreateMSAGLGraphAndPopulatePanelWithAssociatedControls());
-      AffectsMeasure<GraphPanel>(EdgesProperty, HierarchyProperty, LayoutMethodProperty);
+      AffectsMeasure<GraphPanel>(GraphProperty, LayoutMethodProperty);
       AffectsRender<GraphPanel>(ZoomProperty);
     }
 
     public GraphPanel()
     {
       RenderTransformOrigin = new RelativePoint(0, 0, RelativeUnit.Absolute);
-      Hierarchy = x => null;
     }
 
     private void CreateMSAGLGraphAndPopulatePanelWithAssociatedControls()
     {
-      if (Edges == null)
+      if (Graph == null)
         return;
       Children.Clear();
       idGenerator = new ObjectIDGenerator();
-      var edgeVMs = Edges.ToArray();
+      var edgeVMs = Graph.Edges.ToArray();
       var nodeVMs = edgeVMs.Select(e => e.Head).Concat(edgeVMs.Select(e => e.Tail)).Distinct().Select(nvm => new NodeWrapper(nvm, idGenerator)).ToDictionary(nw => nw.VM, nw => nw);
-      var parentVMs = nodeVMs.Select(kv => Hierarchy(kv.Key)).Where(pvm => pvm != null).Distinct().Select(pvm => nodeVMs[pvm]).ToArray();
+      var parentVMs = nodeVMs.Select(kv => Graph.Parent[kv.Key]).Where(pvm => pvm != null).Distinct().Select(pvm => nodeVMs[pvm]).ToArray();
       var leafVMs = nodeVMs.Values.Except(parentVMs).ToArray();
-      graph = new Microsoft.Msagl.Drawing.Graph();
-      graph.LayoutAlgorithmSettings = CurrentLayoutSettings;
+      graph = new Microsoft.Msagl.Drawing.Graph
+      {
+        LayoutAlgorithmSettings = CurrentLayoutSettings
+      };
       graph.RootSubgraph.IsVisible = false;
       vmOfCtrl = new Dictionary<IControl, Wrapper>();
       foreach (var sgvm in parentVMs)
@@ -95,7 +88,7 @@ namespace AvaloniaGraphControl
       }
       foreach (var sgvm in parentVMs)
       {
-        var parent = Hierarchy(sgvm.VM);
+        var parent = Graph.Parent[sgvm.VM];
         var pGraph = (parent == null) ? graph.RootSubgraph : (Microsoft.Msagl.Drawing.Subgraph)nodeVMs[parent].DNode;
         pGraph.AddSubgraph((Microsoft.Msagl.Drawing.Subgraph)sgvm.DNode);
       }
@@ -114,7 +107,7 @@ namespace AvaloniaGraphControl
         nvm.DNode = dNode;
         var ctrl = CreateControl(nvm.VM, n => new TextSticker { Text = n.ToString() }, 4);
         vmOfCtrl[ctrl] = nvm;
-        var parent = Hierarchy(nvm.VM);
+        var parent = Graph.Parent[nvm.VM];
         if (parent != null)
         {
           var pw = nodeVMs[parent];
@@ -197,7 +190,7 @@ namespace AvaloniaGraphControl
 
     protected override Size MeasureOverride(Size constraint)
     {
-      if (Edges == null)
+      if (Graph == null)
         return constraint;
       foreach (var child in Children)
       {
@@ -212,7 +205,7 @@ namespace AvaloniaGraphControl
 
     protected override Size ArrangeOverride(Size finalSize)
     {
-      if (Edges == null)
+      if (Graph == null)
         return finalSize;
       var a2a = new AglToAvalonia(graph.BoundingBox.LeftTop);
       foreach (var child in Children)
