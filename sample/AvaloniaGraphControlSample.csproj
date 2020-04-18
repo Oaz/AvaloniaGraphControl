@@ -15,7 +15,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.*" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.*" />
-    <PackageReference Include="AvaloniaGraphControl" Version="0.3.0" Condition="'$(UseControlOnNuget)'=='True'" />
+    <PackageReference Include="AvaloniaGraphControl" Version="0.3.1" Condition="'$(UseControlOnNuget)'=='True'" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../src/AvaloniaGraphControl.csproj" Condition="'$(UseControlOnNuget)'=='False'" />

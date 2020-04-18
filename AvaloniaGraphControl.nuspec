@@ -1,7 +1,7 @@
 <package>
   <metadata>
     <id>AvaloniaGraphControl</id>
-    <version>0.3.0</version>
+    <version>0.3.1</version>
     <authors>oaz</authors>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/Oaz/AvaloniaGraphControl</projectUrl>
@@ -21,8 +21,8 @@
     </frameworkAssemblies>
   </metadata>
   <files>
-    <file src="src/bin/Release/netstandard2.1/MSAGL.NETCore.dll" target="lib/netstandard2.1" />
-    <file src="src/bin/Release/netstandard2.1/MSAGL.NETCore.Drawing.dll" target="lib/netstandard2.1" />
+    <file src="src/bin/Release/netstandard2.1/AutomaticGraphLayout.dll" target="lib/netstandard2.1" />
+    <file src="src/bin/Release/netstandard2.1/AutomaticGraphLayout.Drawing.dll" target="lib/netstandard2.1" />
     <file src="src/bin/Release/netstandard2.1/AvaloniaGraphControl.dll" target="lib/netstandard2.1" />
     <file src="LICENSE" target="content/LICENSE" />
   </files>
