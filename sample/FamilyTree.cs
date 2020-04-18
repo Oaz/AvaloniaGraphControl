@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia.Media;
 using AvaloniaGraphControl;
 
@@ -42,6 +43,7 @@ namespace AvaloniaGraphControlSample
   {
     public FamilyTree() : base("Family Tree")
     {
+      Orientation = Orientations.Vertical;
       var abraham = new Male("Abraham", "https://en.wikipedia.org/wiki/Grampa_Simpson");
       var mona = new Female("Mona", "https://en.wikipedia.org/wiki/Mona_Simpson_(The_Simpsons)");
       var homer = new Male("Homer", "https://en.wikipedia.org/wiki/Homer_Simpson");
@@ -74,7 +76,14 @@ namespace AvaloniaGraphControlSample
       Edges.Add(CreateEdge(f3, lisa));
       Edges.Add(CreateEdge(f3, maggie));
       Edges.Add(CreateEdge(selma, ling));
+      HorizontalOrder = (p1, p2) => !ParentsOfSameFamily(p1, p2) ? 0 : (p1 is Male) ? -1 : 1;
     }
 
+    private bool ParentsOfSameFamily(object p1, object p2)
+    {
+      var fp1 = Edges.FirstOrDefault(e => e.Tail == p1)?.Head;
+      var fp2 = Edges.FirstOrDefault(e => e.Tail == p2)?.Head;
+      return fp1 != null && fp2 != null && fp1 == fp2;
+    }
   }
 }

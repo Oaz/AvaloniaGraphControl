@@ -47,12 +47,8 @@ namespace AvaloniaGraphControlSample
       Edges.Add(new Edge(b, d));
       Edges.Add(new Edge(d, a));
       Edges.Add(new Edge(d, e));
-      Order = (n1,n2) =>
-      {
-        var v1 = ((StandardItem)n1).Name[0];
-        var v2 = ((StandardItem)n2).Name[0];
-        return v1-v2;
-      };
+      static string Name(dynamic o) => o.Name;
+      VerticalOrder = (n1,n2) => Name(n1).CompareTo(Name(n2));
     }
   }
 
@@ -139,9 +135,8 @@ namespace AvaloniaGraphControlSample
       Parent[b2]=b;
       Parent[b3]=b;
       Parent[b4]=b;
-      //static int Score(dynamic o) => o.Name[0]*10 + ((o.Name.Length>1) ? o.Name[1] : 0);
       static string Name(dynamic o) => o.Name;
-      Order = (n1,n2) => Name(n1).CompareTo(Name(n2));
+      VerticalOrder = (n1,n2) => Name(n1).CompareTo(Name(n2));
     }
   }
 }

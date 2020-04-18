@@ -115,24 +115,23 @@ namespace AvaloniaGraphControl
         }
       }
 
-      var constraints =
+      graph.Attr.LayerDirection = (Graph.Orientation == Graph.Orientations.Vertical)
+        ? Microsoft.Msagl.Drawing.LayerDirection.TB
+        : Microsoft.Msagl.Drawing.LayerDirection.LR;
+      var flowOrder = (Graph.Orientation == Graph.Orientations.Vertical) ? Graph.VerticalOrder : Graph.HorizontalOrder;
+      var otherOrder = (Graph.Orientation == Graph.Orientations.Vertical) ? Graph.HorizontalOrder : Graph.VerticalOrder;
+
+      IEnumerable<(NodeWrapper, NodeWrapper)> ComputeConstraints(Func<object, object, int> comparison) =>
         (from n1 in nodeVMs
          from n2 in nodeVMs
-         let order = Graph.Order(n1.Key, n2.Key)
+         let order = comparison(n1.Key, n2.Key)
          where order != 0
          select (order < 0) ? (n1.Value, n2.Value) : (n2.Value, n1.Value)).Distinct();
-      if (Graph.Orientation == Graph.Orientations.Vertical)
-      {
-        graph.Attr.LayerDirection = Microsoft.Msagl.Drawing.LayerDirection.TB;
-        foreach (var constraint in constraints)
-          graph.LayerConstraints.AddUpDownConstraint(constraint.Item1.DNode, constraint.Item2.DNode);
-      }
-      else
-      {
-        graph.Attr.LayerDirection = Microsoft.Msagl.Drawing.LayerDirection.LR;
-        foreach (var constraint in constraints)
-          graph.LayerConstraints.AddLeftRightConstraint(constraint.Item1.DNode, constraint.Item2.DNode);
-      }
+      foreach (var flowConstraint in ComputeConstraints(flowOrder))
+        graph.LayerConstraints.AddUpDownConstraint(flowConstraint.Item1.DNode, flowConstraint.Item2.DNode);
+      foreach (var otherConstraint in ComputeConstraints(otherOrder))
+        graph.LayerConstraints.AddLeftRightConstraint(otherConstraint.Item1.DNode, otherConstraint.Item2.DNode);
+
 
       graph.CreateGeometryGraph();
       graph.GeometryGraph.RootCluster.RectangularBoundary = new Microsoft.Msagl.Core.Geometry.RectangularClusterBoundary();

@@ -59,6 +59,20 @@ namespace AvaloniaGraphControlSample
       Parent[starting] = available;
       Parent[started] = available;
       Parent[pausing] = available;
+      int Order(object s1, object s2)
+      {
+        if (s1 == s2 || Parent[s1] != Parent[s2])
+          return 0;
+        if (s1 is InitialState)
+          return -1;
+        if (s2 is InitialState)
+          return 1;
+        return 0;
+      }
+      if (orientation == Orientations.Vertical)
+        VerticalOrder = Order;
+      else
+        HorizontalOrder = Order;
     }
   }
 }
