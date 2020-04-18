@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../automatic-graph-layout/GraphLayout/Drawing/AutomaticGraphLayout.Drawing.csproj" />
-    <ProjectReference Include="../automatic-graph-layout/GraphLayout/MSAGL/MSAGL/AutomaticGraphLayout.csproj" />
+    <ProjectReference Include="../automatic-graph-layout/GraphLayout/MSAGL/AutomaticGraphLayout.csproj" />
   </ItemGroup>
 
 </Project>
