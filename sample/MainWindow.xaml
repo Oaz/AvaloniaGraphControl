@@ -21,6 +21,9 @@
         <DataTemplate DataType="{x:Type local:InteractiveItem}">
           <ToggleButton Content="{Binding Name}" Padding="20,5" />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type local:CompositeItem}">
+          <agc:TextSticker Text="{Binding Name}" Shape="RoundedRectangle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type local:FamilyMember}">
           <Button Content="{Binding Name}" Background="{Binding BackgroundColor}" Command="{Binding Navigate}" />
         </DataTemplate>

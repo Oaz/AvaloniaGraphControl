@@ -15,7 +15,10 @@ namespace AvaloniaGraphControlSample
   {
     public IEnumerable<NamedGraph> SampleGraphs => new NamedGraph[] {
       new SimpleGraph(),
+      new SimpleOrderedLayoutGraph(),
       new SimpleInteractiveGraph(),
+      new SimpleWithSubgraph(),
+      new SimpleOrderedLayoutWithSubgraph(),
       new FamilyTree(),
       new StateMachine(Graph.Orientations.Vertical),
       new StateMachine(Graph.Orientations.Horizontal)

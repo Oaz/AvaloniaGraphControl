@@ -72,7 +72,6 @@ namespace AvaloniaGraphControl
       {
         LayoutAlgorithmSettings = CurrentLayoutSettings
       };
-      graph.Attr.LayerDirection = (Graph.Orientation == Graph.Orientations.Vertical) ? Microsoft.Msagl.Drawing.LayerDirection.TB : Microsoft.Msagl.Drawing.LayerDirection.LR;
       graph.RootSubgraph.IsVisible = false;
       vmOfCtrl = new Dictionary<IControl, Wrapper>();
       foreach (var sgvm in parentVMs)
@@ -115,8 +114,30 @@ namespace AvaloniaGraphControl
           ((Microsoft.Msagl.Drawing.Subgraph)pw.DNode).AddNode(dNode);
         }
       }
+
+      var constraints =
+        (from n1 in nodeVMs
+         from n2 in nodeVMs
+         let order = Graph.Order(n1.Key, n2.Key)
+         where order != 0
+         select (order < 0) ? (n1.Value, n2.Value) : (n2.Value, n1.Value)).Distinct();
+      if (Graph.Orientation == Graph.Orientations.Vertical)
+      {
+        graph.Attr.LayerDirection = Microsoft.Msagl.Drawing.LayerDirection.TB;
+        foreach (var constraint in constraints)
+          graph.LayerConstraints.AddUpDownConstraint(constraint.Item1.DNode, constraint.Item2.DNode);
+      }
+      else
+      {
+        graph.Attr.LayerDirection = Microsoft.Msagl.Drawing.LayerDirection.LR;
+        foreach (var constraint in constraints)
+          graph.LayerConstraints.AddLeftRightConstraint(constraint.Item1.DNode, constraint.Item2.DNode);
+      }
+
       graph.CreateGeometryGraph();
       graph.GeometryGraph.RootCluster.RectangularBoundary = new Microsoft.Msagl.Core.Geometry.RectangularClusterBoundary();
+
+
 
       foreach (var evm in edgeVMs)
       {
@@ -126,7 +147,6 @@ namespace AvaloniaGraphControl
           vmOfCtrl[ctrl] = new LabelWrapper(evm.Label, idGenerator, evm.DEdge.Label);
         }
       }
-
     }
 
     private IControl CreateControl(object vm, Func<object, IControl> getDefault, int zIndex)

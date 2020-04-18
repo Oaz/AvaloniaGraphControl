@@ -31,7 +31,32 @@ namespace AvaloniaGraphControlSample
     }
   }
 
-    class InteractiveItem
+  class SimpleOrderedLayoutGraph : NamedGraph
+  {
+    public SimpleOrderedLayoutGraph() : base("Simple Graph (ordered layout)")
+    {
+      var a = new StandardItem("A");
+      var b = new StandardItem("B");
+      var c = new StandardItem("C");
+      var d = new StandardItem("D");
+      var e = new StandardItem("E");
+      Edges.Add(new Edge(a, b));
+      Edges.Add(new Edge(a, d));
+      Edges.Add(new Edge(a, e));
+      Edges.Add(new Edge(b, c));
+      Edges.Add(new Edge(b, d));
+      Edges.Add(new Edge(d, a));
+      Edges.Add(new Edge(d, e));
+      Order = (n1,n2) =>
+      {
+        var v1 = ((StandardItem)n1).Name[0];
+        var v2 = ((StandardItem)n2).Name[0];
+        return v1-v2;
+      };
+    }
+  }
+
+  class InteractiveItem
   {
     public InteractiveItem(string name) { Name = name; }
     public string Name { get; private set; }
@@ -52,6 +77,71 @@ namespace AvaloniaGraphControlSample
       Edges.Add(new Edge(b, d));
       Edges.Add(new Edge(d, a));
       Edges.Add(new Edge(d, e));
+    }
+  }
+
+
+
+  class CompositeItem
+  {
+    public CompositeItem(string name) { Name = name; }
+    public string Name { get; private set; }
+  }
+
+  class SimpleWithSubgraph : NamedGraph
+  {
+    public SimpleWithSubgraph() : base("Simple Graph (with subgraph)")
+    {
+      var a = new StandardItem("A");
+      var b = new CompositeItem("B");
+      var b1 = new StandardItem("B1");
+      var b2 = new StandardItem("B2");
+      var b3 = new StandardItem("B3");
+      var b4 = new StandardItem("B4");
+      var c = new StandardItem("C");
+      var d = new StandardItem("D");
+      Edges.Add(new Edge(a, b));
+      Edges.Add(new Edge(a, c));
+      Edges.Add(new Edge(b, d));
+      Edges.Add(new Edge(c, d));
+      Edges.Add(new Edge(b1, b2));
+      Edges.Add(new Edge(b1, b3));
+      Edges.Add(new Edge(b2, b4));
+      Edges.Add(new Edge(b3, b4));
+      Parent[b1]=b;
+      Parent[b2]=b;
+      Parent[b3]=b;
+      Parent[b4]=b;
+    }
+  }
+
+  class SimpleOrderedLayoutWithSubgraph : NamedGraph
+  {
+    public SimpleOrderedLayoutWithSubgraph() : base("Simple Graph (ordered layout with subgraph)")
+    {
+      var a = new StandardItem("A");
+      var b = new CompositeItem("B");
+      var b1 = new StandardItem("B1");
+      var b2 = new StandardItem("B2");
+      var b3 = new StandardItem("B3");
+      var b4 = new StandardItem("B4");
+      var c = new StandardItem("C");
+      var d = new StandardItem("D");
+      Edges.Add(new Edge(a, b));
+      Edges.Add(new Edge(a, c));
+      Edges.Add(new Edge(b, d));
+      Edges.Add(new Edge(c, d));
+      Edges.Add(new Edge(b1, b2));
+      Edges.Add(new Edge(b1, b3));
+      Edges.Add(new Edge(b2, b4));
+      Edges.Add(new Edge(b3, b4));
+      Parent[b1]=b;
+      Parent[b2]=b;
+      Parent[b3]=b;
+      Parent[b4]=b;
+      //static int Score(dynamic o) => o.Name[0]*10 + ((o.Name.Length>1) ? o.Name[1] : 0);
+      static string Name(dynamic o) => o.Name;
+      Order = (n1,n2) => Name(n1).CompareTo(Name(n2));
     }
   }
 }
