@@ -17,7 +17,8 @@ namespace AvaloniaGraphControlSample
       new SimpleGraph(),
       new SimpleInteractiveGraph(),
       new FamilyTree(),
-      new StateMachine()
+      new StateMachine(Graph.Orientations.Vertical),
+      new StateMachine(Graph.Orientations.Horizontal)
     };
   }
 }

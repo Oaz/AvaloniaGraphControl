@@ -72,6 +72,7 @@ namespace AvaloniaGraphControl
       {
         LayoutAlgorithmSettings = CurrentLayoutSettings
       };
+      graph.Attr.LayerDirection = (Graph.Orientation == Graph.Orientations.Vertical) ? Microsoft.Msagl.Drawing.LayerDirection.TB : Microsoft.Msagl.Drawing.LayerDirection.LR;
       graph.RootSubgraph.IsVisible = false;
       vmOfCtrl = new Dictionary<IControl, Wrapper>();
       foreach (var sgvm in parentVMs)

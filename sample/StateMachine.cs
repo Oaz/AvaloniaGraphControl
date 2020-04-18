@@ -23,8 +23,9 @@ namespace AvaloniaGraphControlSample
 
   class StateMachine : NamedGraph
   {
-    public StateMachine() : base("State Machine")
+    public StateMachine(Orientations orientation) : base($"State Machine ({orientation})")
     {
+      Orientation = orientation;
       var initMain = new InitialState();
       var on = new CompositeState("On", Brushes.LightSkyBlue);
       var off = new State("Off", Brushes.CornflowerBlue);
