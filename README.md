@@ -1,5 +1,5 @@
 # AvaloniaGraphControl
-A graph layout panel for AvaloniaUI
+A graph layout panel for [AvaloniaUI](https://github.com/AvaloniaUI/Avalonia)
 
 ## Usage
 Each individual graph is displayed through the GraphPanel control included in the assembly
