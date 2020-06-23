@@ -13,36 +13,38 @@
       <TextBlock>Select Layout Method:</TextBlock>
       <ComboBox Name="layoutMethods" />
     </StackPanel>
-    <agc:GraphPanel Grid.Column="0" Grid.Row="1" Background="WhiteSmoke" Graph="{Binding SelectedItem, ElementName=graphs}" Zoom="{Binding Value, ElementName=zoomer}" LayoutMethod="{Binding SelectedItem, ElementName=layoutMethods}">
-      <agc:GraphPanel.DataTemplates>
-        <DataTemplate DataType="{x:Type local:StandardItem}">
-          <agc:TextSticker Text="{Binding Name}" Shape="Ellipse" Padding="30,10" />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type local:InteractiveItem}">
-          <ToggleButton Content="{Binding Name}" Padding="20,5" />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type local:CompositeItem}">
-          <agc:TextSticker Text="{Binding Name}" Shape="RoundedRectangle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type local:FamilyMember}">
-          <Button Content="{Binding Name}" Background="{Binding BackgroundColor}" Command="{Binding Navigate}" />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type local:Family}">
-          <Canvas Width="17" Height="12">
-            <Rectangle Width="17" Height="12" Fill="Black" />
-            <Rectangle Canvas.Left="1" Canvas.Top="1" Width="15" Height="10" Fill="Gray" />
-          </Canvas>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type local:State}">
-          <agc:TextSticker Text="{Binding Name}" Background="{Binding Color}" Shape="RoundedRectangle" Padding="1,1" />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type local:CompositeState}">
-          <agc:TextSticker Text="{Binding Name}" Background="{Binding Color}" Shape="RoundedRectangle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="1,1" />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type local:InitialState}">
-          <Ellipse Width="10" Height="10" Fill="Black" />
-        </DataTemplate>
-      </agc:GraphPanel.DataTemplates>
-    </agc:GraphPanel>
+    <ScrollViewer Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
+      <agc:GraphPanel Background="WhiteSmoke" Graph="{Binding SelectedItem, ElementName=graphs}" Zoom="{Binding Value, ElementName=zoomer}" LayoutMethod="{Binding SelectedItem, ElementName=layoutMethods}">
+        <agc:GraphPanel.DataTemplates>
+          <DataTemplate DataType="{x:Type local:StandardItem}">
+            <agc:TextSticker Text="{Binding Name}" Shape="Ellipse" Padding="30,10" />
+          </DataTemplate>
+          <DataTemplate DataType="{x:Type local:InteractiveItem}">
+            <ToggleButton Content="{Binding Name}" Padding="20,5" />
+          </DataTemplate>
+          <DataTemplate DataType="{x:Type local:CompositeItem}">
+            <agc:TextSticker Text="{Binding Name}" Shape="RoundedRectangle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+          </DataTemplate>
+          <DataTemplate DataType="{x:Type local:FamilyMember}">
+            <Button Content="{Binding Name}" Background="{Binding BackgroundColor}" Command="{Binding Navigate}" />
+          </DataTemplate>
+          <DataTemplate DataType="{x:Type local:Family}">
+            <Canvas Width="17" Height="12">
+              <Rectangle Width="17" Height="12" Fill="Black" />
+              <Rectangle Canvas.Left="1" Canvas.Top="1" Width="15" Height="10" Fill="Gray" />
+            </Canvas>
+          </DataTemplate>
+          <DataTemplate DataType="{x:Type local:State}">
+            <agc:TextSticker Text="{Binding Name}" Background="{Binding Color}" Shape="RoundedRectangle" Padding="1,1" />
+          </DataTemplate>
+          <DataTemplate DataType="{x:Type local:CompositeState}">
+            <agc:TextSticker Text="{Binding Name}" Background="{Binding Color}" Shape="RoundedRectangle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="1,1" />
+          </DataTemplate>
+          <DataTemplate DataType="{x:Type local:InitialState}">
+            <Ellipse Width="10" Height="10" Fill="Black" />
+          </DataTemplate>
+        </agc:GraphPanel.DataTemplates>
+      </agc:GraphPanel>
+    </ScrollViewer>
   </Grid>
 </Window>
