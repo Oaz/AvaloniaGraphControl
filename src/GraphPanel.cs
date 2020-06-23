@@ -211,7 +211,7 @@ namespace AvaloniaGraphControl
     protected override Size MeasureOverride(Size constraint)
     {
       if (Graph == null)
-        return constraint;
+        return Size.Empty;
       foreach (var child in Children)
       {
         child.Measure(constraint);
