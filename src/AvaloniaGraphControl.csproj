@@ -1,18 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <LangVersion>8.0</LangVersion>
     <Version>0.3.2</Version>
     <Authors>Olivier Azeau</Authors>
     <Product>AvaloniaGraphControl</Product>
     <PackageId>AvaloniaGraphControl</PackageId>
-    <AssemblyVersion>$(Version)</AssemblyVersion>
-    <FileVersion>$(Version)</FileVersion>
     <NeutralLanguage>en</NeutralLanguage>
     <Description>A graph layout panel for AvaloniaUI</Description>
     <Copyright>Copyright © Olivier Azeau</Copyright>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <RepositoryUrl>https://github.com/Oaz/AvaloniaGraphControl.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Oaz/AvaloniaGraphControl</PackageProjectUrl>
-    <PackageTags>Avalonia Graph Control</PackageTags>
+    <PackageTags>Avalonia Graph Control MSAGL</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>Release</PackageReleaseNotes>
   </PropertyGroup>
 
