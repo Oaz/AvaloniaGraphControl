@@ -1,2 +1,1 @@
-dotnet build -c Release
-dotnet pack src/AvaloniaGraphControl.csproj --no-build
+dotnet pack src/AvaloniaGraphControl.csproj -c Release
