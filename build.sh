@@ -1,2 +1,2 @@
 dotnet build -c Release
-nuget pack AvaloniaGraphControl.nuspec
+dotnet pack src/AvaloniaGraphControl.csproj --no-build

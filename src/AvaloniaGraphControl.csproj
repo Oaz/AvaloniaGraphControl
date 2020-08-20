@@ -7,13 +7,16 @@
     <Authors>Olivier Azeau</Authors>
     <Product>AvaloniaGraphControl</Product>
     <PackageId>AvaloniaGraphControl</PackageId>
-    <AssemblyVersion>$(Version)</AssemblyVersion>
-    <FileVersion>$(Version)</FileVersion>
     <NeutralLanguage>en</NeutralLanguage>
     <Description>A graph layout panel for AvaloniaUI</Description>
     <Copyright>Copyright © Olivier Azeau</Copyright>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <RepositoryUrl>https://github.com/Oaz/AvaloniaGraphControl.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Oaz/AvaloniaGraphControl</PackageProjectUrl>
-    <PackageTags>Avalonia Graph Control</PackageTags>
+    <PackageTags>Avalonia Graph Control MSAGL</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>Release</PackageReleaseNotes>
   </PropertyGroup>
 
