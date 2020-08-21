@@ -4,14 +4,14 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
   xmlns:agc="clr-namespace:AvaloniaGraphControl;assembly=AvaloniaGraphControl" 
   xmlns:local="clr-namespace:AvaloniaGraphControlSample;assembly=AvaloniaGraphControlSample" mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" Width="800" Height="700" x:Class="AvaloniaGraphControlSample.MainWindow" Title="AvaloniaGraphControlSample">
-  <Grid ColumnDefinitions="1*" RowDefinitions="25,1*">
-    <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
-      <TextBlock>Select Graph:</TextBlock>
-      <ComboBox Name="graphs" Items="{Binding SampleGraphs}"/>
-      <TextBlock>Select Zoom:</TextBlock>
-      <Slider Name="zoomer" Orientation="Horizontal" Width="200" Value="1" Minimum="0.3" Maximum="3"/>
+  <Grid ColumnDefinitions="1*" RowDefinitions="Auto,1*">
+    <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="4">
+      <TextBlock Margin="4">Select Graph:</TextBlock>
+      <ComboBox Name="graphs" Items="{Binding SampleGraphs}" Margin="4"/>
+      <TextBlock Margin="4">Select Zoom:</TextBlock>
+      <Slider Name="zoomer" Orientation="Horizontal" Width="200" Value="1" Minimum="0.3" Maximum="3" Margin="4" />
       <TextBlock>Select Layout Method:</TextBlock>
-      <ComboBox Name="layoutMethods" />
+      <ComboBox Name="layoutMethods" Margin="4" />
     </StackPanel>
     <ScrollViewer Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
       <LayoutTransformControl Classes="screen pdf">
