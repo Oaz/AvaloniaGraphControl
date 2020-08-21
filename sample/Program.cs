@@ -1,5 +1,4 @@
 using Avalonia;
-using Avalonia.Logging.Serilog;
 
 namespace AvaloniaGraphControlSample
 {
