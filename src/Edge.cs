@@ -27,9 +27,9 @@ namespace AvaloniaGraphControl
     internal Microsoft.Msagl.Drawing.Edge DEdge { get; set; }
 
     internal static Microsoft.Msagl.Drawing.ArrowStyle GetArrowStyle(Symbol symbol) => symbol switch
-      {
-        Symbol.Arrow => Microsoft.Msagl.Drawing.ArrowStyle.Normal,
-        _ => Microsoft.Msagl.Drawing.ArrowStyle.None
-      };
+    {
+      Symbol.Arrow => Microsoft.Msagl.Drawing.ArrowStyle.Normal,
+      _ => Microsoft.Msagl.Drawing.ArrowStyle.None
+    };
   }
 }

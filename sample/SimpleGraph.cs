@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using Avalonia.Media;
 using AvaloniaGraphControl;
 
 namespace AvaloniaGraphControlSample
@@ -48,7 +45,7 @@ namespace AvaloniaGraphControlSample
       Edges.Add(new Edge(d, a));
       Edges.Add(new Edge(d, e));
       static string Name(dynamic o) => o.Name;
-      VerticalOrder = (n1,n2) => Name(n1).CompareTo(Name(n2));
+      VerticalOrder = (n1, n2) => Name(n1).CompareTo(Name(n2));
     }
   }
 
@@ -104,10 +101,10 @@ namespace AvaloniaGraphControlSample
       Edges.Add(new Edge(b1, b3));
       Edges.Add(new Edge(b2, b4));
       Edges.Add(new Edge(b3, b4));
-      Parent[b1]=b;
-      Parent[b2]=b;
-      Parent[b3]=b;
-      Parent[b4]=b;
+      Parent[b1] = b;
+      Parent[b2] = b;
+      Parent[b3] = b;
+      Parent[b4] = b;
     }
   }
 
@@ -131,12 +128,12 @@ namespace AvaloniaGraphControlSample
       Edges.Add(new Edge(b1, b3));
       Edges.Add(new Edge(b2, b4));
       Edges.Add(new Edge(b3, b4));
-      Parent[b1]=b;
-      Parent[b2]=b;
-      Parent[b3]=b;
-      Parent[b4]=b;
+      Parent[b1] = b;
+      Parent[b2] = b;
+      Parent[b3] = b;
+      Parent[b4] = b;
       static string Name(dynamic o) => o.Name;
-      VerticalOrder = (n1,n2) => Name(n1).CompareTo(Name(n2));
+      VerticalOrder = (n1, n2) => Name(n1).CompareTo(Name(n2));
     }
   }
 }
