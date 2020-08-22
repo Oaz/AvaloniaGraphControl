@@ -1,19 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaGraphControl", "src\AvaloniaGraphControl.csproj", "{12E78A54-8101-4709-841A-ACEF1BC196A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaGraphControl", "src\AvaloniaGraphControl.csproj", "{12E78A54-8101-4709-841A-ACEF1BC196A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaGraphControlSample", "sample\AvaloniaGraphControlSample.csproj", "{1B2CEFC9-EFFE-4D8F-8D0B-8003116A61F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaGraphControlSample", "sample\AvaloniaGraphControlSample.csproj", "{1B2CEFC9-EFFE-4D8F-8D0B-8003116A61F7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "automatic-graph-layout", "automatic-graph-layout", "{6E232EF1-91B5-4B05-B901-5E569BA8B65E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GraphLayout", "GraphLayout", "{D9D47DB8-93F3-45AE-9B73-5A0E3EDF4460}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaticGraphLayout", "automatic-graph-layout\GraphLayout\MSAGL\AutomaticGraphLayout.csproj", "{1393F20E-3A9A-4441-8B97-5B2C59455333}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutomaticGraphLayout", "automatic-graph-layout\GraphLayout\MSAGL\AutomaticGraphLayout.csproj", "{1393F20E-3A9A-4441-8B97-5B2C59455333}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaticGraphLayout.Drawing", "automatic-graph-layout\GraphLayout\Drawing\AutomaticGraphLayout.Drawing.csproj", "{49A9BE4D-AD5D-468B-A9AC-00AD422D3916}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutomaticGraphLayout.Drawing", "automatic-graph-layout\GraphLayout\Drawing\AutomaticGraphLayout.Drawing.csproj", "{49A9BE4D-AD5D-468B-A9AC-00AD422D3916}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B8DC2FA2-5E36-415C-8007-7B8CD6ADA692}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,9 +28,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{12E78A54-8101-4709-841A-ACEF1BC196A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -77,9 +79,15 @@ Global
 		{49A9BE4D-AD5D-468B-A9AC-00AD422D3916}.Release|x86.ActiveCfg = Release|Any CPU
 		{49A9BE4D-AD5D-468B-A9AC-00AD422D3916}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D9D47DB8-93F3-45AE-9B73-5A0E3EDF4460} = {6E232EF1-91B5-4B05-B901-5E569BA8B65E}
 		{1393F20E-3A9A-4441-8B97-5B2C59455333} = {D9D47DB8-93F3-45AE-9B73-5A0E3EDF4460}
 		{49A9BE4D-AD5D-468B-A9AC-00AD422D3916} = {D9D47DB8-93F3-45AE-9B73-5A0E3EDF4460}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {67A3EBC9-866F-4A93-95EA-40DF02E36C6A}
 	EndGlobalSection
 EndGlobal

@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Avalonia;
 using Avalonia.Media;
 
@@ -22,17 +20,17 @@ namespace AvaloniaGraphControl
 
     private static IEnumerable<PathSegment> CreateRoundedRectangle(Rect bounds, double radius)
     {
-      var cornerSize = new Size(radius,radius);
-      var hMove = new Point(radius,0);
-      var vMove = new Point(0,radius);
+      var cornerSize = new Size(radius, radius);
+      var hMove = new Point(radius, 0);
+      var vMove = new Point(0, radius);
       yield return new LineSegment { Point = bounds.TopRight - hMove };
-      yield return new ArcSegment { Point = bounds.TopRight + vMove, Size = cornerSize, SweepDirection=SweepDirection.Clockwise };
+      yield return new ArcSegment { Point = bounds.TopRight + vMove, Size = cornerSize, SweepDirection = SweepDirection.Clockwise };
       yield return new LineSegment { Point = bounds.BottomRight - vMove };
-      yield return new ArcSegment { Point = bounds.BottomRight - hMove, Size = cornerSize, SweepDirection=SweepDirection.Clockwise };
+      yield return new ArcSegment { Point = bounds.BottomRight - hMove, Size = cornerSize, SweepDirection = SweepDirection.Clockwise };
       yield return new LineSegment { Point = bounds.BottomLeft + hMove };
-      yield return new ArcSegment { Point = bounds.BottomLeft - vMove, Size = cornerSize, SweepDirection=SweepDirection.Clockwise };
+      yield return new ArcSegment { Point = bounds.BottomLeft - vMove, Size = cornerSize, SweepDirection = SweepDirection.Clockwise };
       yield return new LineSegment { Point = bounds.TopLeft + vMove };
-      yield return new ArcSegment { Point = bounds.TopLeft + hMove, Size = cornerSize, SweepDirection=SweepDirection.Clockwise };
+      yield return new ArcSegment { Point = bounds.TopLeft + hMove, Size = cornerSize, SweepDirection = SweepDirection.Clockwise };
     }
   }
 }

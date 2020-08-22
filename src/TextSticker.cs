@@ -1,5 +1,3 @@
-
-using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
@@ -18,7 +16,7 @@ namespace AvaloniaGraphControl
     public static readonly StyledProperty<FontStyle> FontStyleProperty = AvaloniaProperty.Register<TextSticker, FontStyle>(nameof(FontStyle));
     public static readonly StyledProperty<double> FontSizeProperty = AvaloniaProperty.Register<TextSticker, double>(nameof(FontSize), 12);
     public static readonly StyledProperty<FontFamily> FontFamilyProperty = AvaloniaProperty.Register<TextSticker, FontFamily>(nameof(FontFamily), FontFamily.Default);
-    public static readonly StyledProperty<Thickness> PaddingProperty = AvaloniaProperty.Register<TextSticker, Thickness>(nameof(Padding), new Thickness(10,5));
+    public static readonly StyledProperty<Thickness> PaddingProperty = AvaloniaProperty.Register<TextSticker, Thickness>(nameof(Padding), new Thickness(10, 5));
 
     public enum Shapes
     {

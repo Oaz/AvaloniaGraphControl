@@ -5,7 +5,6 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Microsoft.Msagl.Drawing;
 
 namespace AvaloniaGraphControl
 {
