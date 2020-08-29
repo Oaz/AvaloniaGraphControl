@@ -16,7 +16,7 @@ namespace AvaloniaGraphControl
       var ftext = new FormattedText
       {
         Constraint = new Size(10, 10),
-        Typeface = new Typeface(fontFamily, fontStyle, fontWeight),
+        Typeface = FontManager.Current.GetOrAddTypeface(fontFamily, fontStyle, fontWeight),
         Text = label.Text,
         FontSize = fontSize,
       };
