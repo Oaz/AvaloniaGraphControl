@@ -3,22 +3,6 @@ using AvaloniaGraphControl;
 
 namespace AvaloniaGraphControlSample
 {
-  class State
-  {
-    public State(string name, IBrush color) { Name = name; Color = color; }
-    public string Name { get; private set; }
-    public IBrush Color { get; private set; }
-  }
-  class InitialState
-  {
-  }
-  class CompositeState
-  {
-    public CompositeState(string name, IBrush color) { Name = name; Color = color; }
-    public string Name { get; private set; }
-    public IBrush Color { get; private set; }
-  }
-
   class StateMachine : NamedGraph
   {
     public StateMachine(Orientations orientation) : base($"State Machine ({orientation})")
