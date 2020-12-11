@@ -1,9 +1,13 @@
 <Window xmlns="https://github.com/avaloniaui" 
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-  xmlns:agc="using:AvaloniaGraphControl" 
-  xmlns:local="using:AvaloniaGraphControlSample" mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" Width="800" Height="700" x:Class="AvaloniaGraphControlSample.MainWindow" Title="AvaloniaGraphControlSample">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:agc="using:AvaloniaGraphControl" 
+        xmlns:local="using:AvaloniaGraphControlSample"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        Width="800" Height="700"
+        x:Class="AvaloniaGraphControlSample.MainWindow"
+        Title="AvaloniaGraphControlSample">
   <Grid ColumnDefinitions="Auto,Auto,1*"
         RowDefinitions="Auto,Auto,1*"
         Margin="4">
