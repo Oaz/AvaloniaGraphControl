@@ -20,7 +20,9 @@ namespace AvaloniaGraphControlSample
       new SimpleOrderedLayoutWithSubgraph(),
       new FamilyTree(),
       new StateMachine(Graph.Orientations.Vertical),
-      new StateMachine(Graph.Orientations.Horizontal)
+      new StateMachine(Graph.Orientations.Horizontal),
+      new StateMachineManyComposites(Graph.Orientations.Vertical),
+      new StateMachineManyComposites(Graph.Orientations.Horizontal),
     };
   }
 }
