@@ -1,9 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <UseControlOnNuget>False</UseControlOnNuget>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
+
   <ItemGroup>
     <Compile Update="**\*.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
@@ -12,12 +14,21 @@
       <SubType>Designer</SubType>
     </AvaloniaResource>
   </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.9.*" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.9.*" />
-    <PackageReference Include="AvaloniaGraphControl" Version="0.3.2" Condition="'$(UseControlOnNuget)'=='True'" />
+    <PackageReference Include="Avalonia" Version="0.10.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.0" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="../src/AvaloniaGraphControl.csproj" Condition="'$(UseControlOnNuget)'=='False'" />
+
+  <ItemGroup Condition="'$(Configuration)'=='Debug'">
+    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.0" />
   </ItemGroup>
+
+  <ItemGroup Condition="'$(UseControlOnNuget)'=='False'">
+    <ProjectReference Include="../src/AvaloniaGraphControl.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(UseControlOnNuget)'=='True'">
+    <PackageReference Include="AvaloniaGraphControl" Version="0.3.2" />
+  </ItemGroup>
+
 </Project>
