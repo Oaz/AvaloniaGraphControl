@@ -3,7 +3,7 @@
   <PropertyGroup>
     <UseControlOnNuget>False</UseControlOnNuget>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,7 +28,7 @@
     <ProjectReference Include="../src/AvaloniaGraphControl.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(UseControlOnNuget)'=='True'">
-    <PackageReference Include="AvaloniaGraphControl" Version="0.3.2" />
+    <PackageReference Include="AvaloniaGraphControl" Version="0.4.0" />
   </ItemGroup>
 
 </Project>
