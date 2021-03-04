@@ -90,6 +90,9 @@
                                VerticalAlignment="Stretch"
                                Padding="1" />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type local:ColoredEdge}">
+              <agc:Connection Brush="{Binding MyCustomColor}" />
+            </DataTemplate>
             <DataTemplate DataType="{x:Type local:InitialState}">
               <Ellipse Width="10" Height="10" Fill="Black" />
             </DataTemplate>

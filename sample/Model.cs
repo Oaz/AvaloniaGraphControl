@@ -18,6 +18,7 @@ namespace AvaloniaGraphControlSample
       new SimpleInteractiveGraph(),
       new SimpleWithSubgraph(),
       new SimpleOrderedLayoutWithSubgraph(),
+      new ColoredEdges(),
       new FamilyTree(),
       new StateMachine(Graph.Orientations.Vertical),
       new StateMachine(Graph.Orientations.Horizontal),
