@@ -3,7 +3,7 @@
   <PropertyGroup>
     <UseControlOnNuget>False</UseControlOnNuget>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
