@@ -1,3 +1,4 @@
+using System.Globalization;
 using Avalonia;
 using Avalonia.Media;
 using MsaglDrawing = Microsoft.Msagl.Drawing;
@@ -13,13 +14,13 @@ namespace AvaloniaGraphControl
       var fontFamily = CreateFontFamily(label);
       var fontSize = label.FontSize;
       var (fontStyle, fontWeight) = GetFontProps(label.FontStyle);
-      var ftext = new FormattedText
-      {
-        Constraint = new Size(10, 10),
-        Typeface = new Typeface(fontFamily, fontStyle, fontWeight),
-        Text = label.Text,
-        FontSize = fontSize,
-      };
+      var ftext = new FormattedText(
+        label.Text, 
+        CultureInfo.CurrentUICulture, 
+        FlowDirection.LeftToRight, 
+        new Typeface(fontFamily, fontStyle, fontWeight),
+        fontSize,
+        new SolidColorBrush(Color.FromArgb(label.FontColor.A, label.FontColor.R, label.FontColor.G, label.FontColor.B)));
       return ftext;
     }
 
