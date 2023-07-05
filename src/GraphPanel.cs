@@ -72,7 +72,7 @@ namespace AvaloniaGraphControl
         LayoutAlgorithmSettings = CurrentLayoutSettings
       };
       graph.RootSubgraph.IsVisible = false;
-      vmOfCtrl = new Dictionary<IControl, Wrapper>();
+      vmOfCtrl = new Dictionary<Control, Wrapper>();
       foreach (var sgvm in parentVMs)
       {
         var sg = new Microsoft.Msagl.Drawing.Subgraph(sgvm.ID);
@@ -147,7 +147,7 @@ namespace AvaloniaGraphControl
       }
     }
 
-    private IControl CreateControl(object vm, Func<object, IControl> getDefault, int zIndex)
+    private Control CreateControl(object vm, Func<object, Control> getDefault, int zIndex)
     {
       var tpl = this.FindDataTemplate(vm);
       var ctrl = tpl == null ? getDefault(vm) : tpl.Build(vm);
@@ -159,7 +159,7 @@ namespace AvaloniaGraphControl
 
     Microsoft.Msagl.Drawing.Graph graph;
     ObjectIDGenerator idGenerator;
-    Dictionary<IControl, Wrapper> vmOfCtrl;
+    Dictionary<Control, Wrapper> vmOfCtrl;
 
     abstract class Wrapper
     {
@@ -172,7 +172,7 @@ namespace AvaloniaGraphControl
       public readonly string ID;
 
       internal abstract Microsoft.Msagl.Core.Geometry.Rectangle GetBoundingBox();
-      internal abstract void UpdateBounds(IControl ctrl);
+      internal abstract void UpdateBounds(Control ctrl);
     }
 
     class LabelWrapper : Wrapper
@@ -184,7 +184,7 @@ namespace AvaloniaGraphControl
 
       public readonly Microsoft.Msagl.Drawing.Label DLabel;
       internal override Microsoft.Msagl.Core.Geometry.Rectangle GetBoundingBox() => DLabel.BoundingBox;
-      internal override void UpdateBounds(IControl ctrl)
+      internal override void UpdateBounds(Control ctrl)
       {
         DLabel.Width = ctrl.DesiredSize.Width;
         DLabel.Height = ctrl.DesiredSize.Height;
@@ -198,7 +198,7 @@ namespace AvaloniaGraphControl
       public Microsoft.Msagl.Drawing.Node DNode { get; set; }
 
       internal override Microsoft.Msagl.Core.Geometry.Rectangle GetBoundingBox() => DNode.BoundingBox;
-      internal override void UpdateBounds(IControl ctrl)
+      internal override void UpdateBounds(Control ctrl)
       {
         if (DNode.GeometryNode == null)
           return;
@@ -210,7 +210,7 @@ namespace AvaloniaGraphControl
     protected override Size MeasureOverride(Size constraint)
     {
       if (Graph == null)
-        return Size.Empty;
+        return new Size(0, 0);
       foreach (var child in Children)
       {
         child.Measure(constraint);
@@ -239,7 +239,7 @@ namespace AvaloniaGraphControl
       return graphSize;
     }
 
-    private Microsoft.Msagl.Core.Geometry.Rectangle? GetBoundingBox(IControl ctrl)
+    private Microsoft.Msagl.Core.Geometry.Rectangle? GetBoundingBox(Control ctrl)
     {
       if (vmOfCtrl.TryGetValue(ctrl, out Wrapper w))
         return w.GetBoundingBox();
