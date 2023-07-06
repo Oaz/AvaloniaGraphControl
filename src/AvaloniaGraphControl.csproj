@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
-    <LangVersion>8.0</LangVersion>
-    <Version>0.4.1</Version>
+    <LangVersion>latestmajor</LangVersion>
+    <Version>0.5.0</Version>
     <Authors>Olivier Azeau</Authors>
     <Product>AvaloniaGraphControl</Product>
     <PackageId>AvaloniaGraphControl</PackageId>
@@ -21,7 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia" Version="11.0.0" />
   </ItemGroup>
 
   <ItemGroup>

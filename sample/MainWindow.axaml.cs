@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -10,7 +10,6 @@ namespace AvaloniaGraphControlSample
     public MainWindow()
     {
       InitializeComponent();
-      this.FindControl<ComboBox>("layoutMethods").Items = Enum.GetValues(typeof(AvaloniaGraphControl.GraphPanel.LayoutMethods));
 #if DEBUG
       this.AttachDevTools();
 #endif

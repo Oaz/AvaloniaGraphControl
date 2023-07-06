@@ -21,7 +21,7 @@
                Margin="4"
                Grid.Row="0" Grid.Column="2" />
     <ComboBox Name="graphs"
-              Items="{Binding SampleGraphs}"
+              ItemsSource="{Binding SampleGraphs}"
               Margin="4"
               Width="320"
               Grid.Row="1" Grid.Column="0" />
@@ -33,6 +33,7 @@
             Margin="4"
             Grid.Row="1" Grid.Column="1" />
     <ComboBox Name="layoutMethods"
+              ItemsSource="{Binding LayoutMethods}"
               Margin="4"
               Width="160"
               Grid.Row="1" Grid.Column="2" />

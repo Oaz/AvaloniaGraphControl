@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using AvaloniaGraphControl;
 
 namespace AvaloniaGraphControlSample
@@ -25,5 +27,7 @@ namespace AvaloniaGraphControlSample
       new StateMachineManyComposites(Graph.Orientations.Vertical),
       new StateMachineManyComposites(Graph.Orientations.Horizontal),
     };
+
+    public IEnumerable<GraphPanel.LayoutMethods> LayoutMethods => Enum.GetValues(typeof(GraphPanel.LayoutMethods)).Cast<GraphPanel.LayoutMethods>();
   }
 }

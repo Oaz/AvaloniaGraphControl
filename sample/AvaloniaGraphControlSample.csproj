@@ -4,23 +4,24 @@
     <UseControlOnNuget>False</UseControlOnNuget>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>latestmajor</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.0-preview6" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview6" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia" Version="11.0.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.0" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
-    <PackageReference Include="Avalonia.Diagnostics" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.0.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(UseControlOnNuget)'=='False'">
     <ProjectReference Include="../src/AvaloniaGraphControl.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(UseControlOnNuget)'=='True'">
-    <PackageReference Include="AvaloniaGraphControl" Version="0.4.0" />
+    <PackageReference Include="AvaloniaGraphControl" Version="0.5.0" />
   </ItemGroup>
 
 </Project>
