@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using Avalonia;
@@ -217,7 +218,15 @@ namespace AvaloniaGraphControl
         if (vmOfCtrl.TryGetValue(child, out Wrapper w))
           w.UpdateBounds(child);
       }
-      Microsoft.Msagl.Miscellaneous.LayoutHelpers.CalculateLayout(graph.GeometryGraph, graph.LayoutAlgorithmSettings, null);
+      try
+      {
+        Microsoft.Msagl.Miscellaneous.LayoutHelpers.CalculateLayout(graph.GeometryGraph, graph.LayoutAlgorithmSettings,
+          null);
+      }
+      catch (Exception e)
+      {
+        Trace.TraceError("Msagl layout error {0}", e);
+      }
       var graphDesiredSize = AglToAvalonia.Convert(graph.BoundingBox.Size);
       return graphDesiredSize;
     }
@@ -241,10 +250,17 @@ namespace AvaloniaGraphControl
 
     private Microsoft.Msagl.Core.Geometry.Rectangle? GetBoundingBox(Control ctrl)
     {
-      if (vmOfCtrl.TryGetValue(ctrl, out Wrapper w))
-        return w.GetBoundingBox();
-      if (ctrl is Connection c)
-        return ((Edge)c.DataContext).DEdge.BoundingBox;
+      try
+      {
+        if (vmOfCtrl.TryGetValue(ctrl, out Wrapper w))
+          return w.GetBoundingBox();
+        if (ctrl is Connection c)
+          return ((Edge)c.DataContext).DEdge.BoundingBox;
+      }
+      catch (Exception e)
+      {
+        Trace.TraceError("Msagl bounding box error {0}", e);
+      }
       return null;
     }
 
