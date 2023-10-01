@@ -7,39 +7,24 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaGraphControlSample.MainView"
              x:DataType="local:Model">
-  <Grid ColumnDefinitions="Auto,Auto,1*"
-        RowDefinitions="Auto,Auto,1*"
-        Margin="4">
-    <TextBlock Text="Select Graph:"
-               Margin="4"
-               Grid.Row="0" Grid.Column="0" />
-    <TextBlock Text="Select Zoom:"
-               Margin="4"
-               Grid.Row="0" Grid.Column="1" />
-    <TextBlock Text="Select Layout Method:"
-               Margin="4"
-               Grid.Row="0" Grid.Column="2" />
-    <ComboBox Name="graphs"
-              ItemsSource="{Binding SampleGraphs}"
-              Margin="4"
-              Width="320"
-              Grid.Row="1" Grid.Column="0" />
-    <Slider Name="zoomer"
-            Orientation="Horizontal"
-            Width="200"
-            Value="1"
-            Minimum="0.3" Maximum="3"
-            Margin="4"
-            Grid.Row="1" Grid.Column="1" />
-    <ComboBox Name="layoutMethods"
-              ItemsSource="{Binding LayoutMethods}"
-              Margin="4"
-              Width="160"
-              Grid.Row="1" Grid.Column="2" />
-    <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                  VerticalScrollBarVisibility="Auto"
-                  Grid.Row="2" Grid.Column="0"
-                  Grid.ColumnSpan="3">
+  <DockPanel LastChildFill="True">
+    <WrapPanel DockPanel.Dock="Top">
+      <StackPanel Orientation="Vertical">
+        <TextBlock Text="Select Graph:" Margin="4" />
+        <ComboBox Name="graphs" ItemsSource="{Binding SampleGraphs}" Margin="4" />
+      </StackPanel>
+      <StackPanel Orientation="Vertical">
+        <TextBlock Text="Select Layout Method:" Margin="4" />
+        <ComboBox Name="layoutMethods" ItemsSource="{Binding LayoutMethods}" Margin="4" />
+      </StackPanel>
+      <StackPanel Orientation="Vertical">
+        <TextBlock Text="Select Zoom:" Margin="4" />
+        <Slider Name="zoomer"
+                Orientation="Horizontal" Width="200" Margin="4"
+                Value="1" Minimum="0.3" Maximum="3" />
+      </StackPanel>
+    </WrapPanel>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
       <LayoutTransformControl Classes="screen pdf">
         <LayoutTransformControl.LayoutTransform>
           <ScaleTransform ScaleX="{Binding Value, ElementName=zoomer}"
@@ -100,6 +85,6 @@
         </agc:GraphPanel>
       </LayoutTransformControl>
     </ScrollViewer>
-  </Grid>
+  </DockPanel>
 </UserControl>
 
