@@ -20,14 +20,6 @@ namespace AvaloniaGraphControl
       set { SetValue(GraphProperty, value); }
     }
 
-    public static readonly StyledProperty<double> ZoomProperty = AvaloniaProperty.Register<GraphPanel, double>(nameof(Zoom), 1.0);
-
-    public double Zoom
-    {
-      get { return GetValue(ZoomProperty); }
-      set { SetValue(ZoomProperty, value); }
-    }
-
     public enum LayoutMethods
     {
       SugiyamaScheme,
@@ -47,10 +39,8 @@ namespace AvaloniaGraphControl
     static GraphPanel()
     {
       GraphProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.CreateMSAGLGraphAndPopulatePanelWithAssociatedControls());
-      ZoomProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.RenderTransform = new ScaleTransform(gp.Zoom, gp.Zoom));
       LayoutMethodProperty.Changed.AddClassHandler<GraphPanel>((gp, _) => gp.CreateMSAGLGraphAndPopulatePanelWithAssociatedControls());
       AffectsMeasure<GraphPanel>(GraphProperty, LayoutMethodProperty);
-      AffectsRender<GraphPanel>(ZoomProperty);
     }
 
     public GraphPanel()

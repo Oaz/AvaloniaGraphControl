@@ -17,20 +17,16 @@
         <TextBlock Text="Select Layout Method:" Margin="4" />
         <ComboBox Name="layoutMethods" ItemsSource="{Binding LayoutMethods}" Margin="4" />
       </StackPanel>
-      <StackPanel Orientation="Vertical">
-        <TextBlock Text="Select Zoom:" Margin="4" />
-        <Slider Name="zoomer"
-                Orientation="Horizontal" Width="200" Margin="4"
-                Value="1" Minimum="0.3" Maximum="3" />
-      </StackPanel>
+      <Button Click="ResetZoom">Reset Zoom</Button>
     </WrapPanel>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-      <LayoutTransformControl Classes="screen pdf">
-        <LayoutTransformControl.LayoutTransform>
-          <ScaleTransform ScaleX="{Binding Value, ElementName=zoomer}"
-                          ScaleY="{Binding Value, ElementName=zoomer}"/>
-        </LayoutTransformControl.LayoutTransform>
-        <agc:GraphPanel Background="WhiteSmoke"
+      <ZoomBorder x:Name="ZoomBorder" Stretch="Uniform" ZoomSpeed="1.2"
+                  ClipToBounds="True" Focusable="True" Background="White"
+                  VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <ZoomBorder.GestureRecognizers>
+          <PinchGestureRecognizer />
+        </ZoomBorder.GestureRecognizers>
+        <agc:GraphPanel Background="White"
                         Graph="{Binding SelectedItem, ElementName=graphs}"
                         LayoutMethod="{Binding SelectedItem, ElementName=layoutMethods}">
           <agc:GraphPanel.DataTemplates>
@@ -83,8 +79,7 @@
             </DataTemplate>
           </agc:GraphPanel.DataTemplates>
         </agc:GraphPanel>
-      </LayoutTransformControl>
+      </ZoomBorder>
     </ScrollViewer>
   </DockPanel>
 </UserControl>
-
