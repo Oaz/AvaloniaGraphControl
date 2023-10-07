@@ -24,7 +24,7 @@ jobs:
         mkdir -p local_package
         ./build.sh
     - name: Build sample
-      run: dotnet build ./sample.Browser/AvaloniaGraphControlSample.Browser.csproj -c Debug
+      run: dotnet build ./sample.Browser/AvaloniaGraphControlSample.Browser.csproj -c Debug /p:UseControlOnNuget=True
     - name: Fix permissions
       run: |
         chmod -c -R +rX "sample.Browser/bin/Debug/net7.0/browser-wasm/AppBundle/" | while read line; do
