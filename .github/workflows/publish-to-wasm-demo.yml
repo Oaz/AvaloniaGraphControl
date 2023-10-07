@@ -20,7 +20,9 @@ jobs:
     - name: Restore workloads
       run: dotnet workload restore
     - name: Build control
-      run: ./clean_build.sh
+      run: |
+        mkdir -p local_package
+        ./build.sh
     - name: Build sample
       run: dotnet build ./sample.Browser/AvaloniaGraphControlSample.Browser.csproj -c Debug
     - name: Fix permissions
