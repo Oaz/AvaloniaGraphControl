@@ -16,7 +16,7 @@ public class ZoomBorderHelper
     Border.ZoomTo(scale, point.X, point.Y);
   }
   
-  public void Reset() => Border.ResetMatrix();
+  public void Reset() => Border.Uniform();
   
   public ZoomBorderHelper(ZoomBorder border)
   {

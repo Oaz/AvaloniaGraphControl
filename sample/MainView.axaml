@@ -17,7 +17,7 @@
         <TextBlock Text="Select Layout Method:" Margin="4" />
         <ComboBox Name="layoutMethods" ItemsSource="{Binding LayoutMethods}" Margin="4" />
       </StackPanel>
-      <Button Click="ResetZoom">Reset Zoom</Button>
+      <Button Click="ResetDisplay">Reset</Button>
       <TextBlock Text="{Binding Version}" />
     </WrapPanel>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">

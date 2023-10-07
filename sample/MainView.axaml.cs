@@ -17,6 +17,6 @@ public partial class MainView : UserControl
   
   private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
-  private void ResetZoom(object? sender, RoutedEventArgs e) => zoomBorderHelper.Reset();
+  private void ResetDisplay(object? sender, RoutedEventArgs e) => zoomBorderHelper.Reset();
 }
 
