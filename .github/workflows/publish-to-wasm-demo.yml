@@ -5,10 +5,9 @@ on:
     branches: [ "ga_setup" ]
 
 jobs:
+
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
       with:
@@ -34,5 +33,18 @@ jobs:
       uses: actions/upload-pages-artifact@v2.0.0
       with:
         path: sample.Browser/bin/Debug/net7.0/browser-wasm/AppBundle/
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
     - name: Deploy GitHub Pages site
+      id: deployment
       uses: actions/deploy-pages@v1.2.9
+
