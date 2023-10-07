@@ -18,6 +18,7 @@
         <ComboBox Name="layoutMethods" ItemsSource="{Binding LayoutMethods}" Margin="4" />
       </StackPanel>
       <Button Click="ResetZoom">Reset Zoom</Button>
+      <TextBlock Text="{Binding Version}" />
     </WrapPanel>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
       <ZoomBorder x:Name="ZoomBorder" Stretch="Uniform" ZoomSpeed="1.2"

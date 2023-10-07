@@ -29,5 +29,7 @@ namespace AvaloniaGraphControlSample
     };
 
     public IEnumerable<GraphPanel.LayoutMethods> LayoutMethods => Enum.GetValues(typeof(GraphPanel.LayoutMethods)).Cast<GraphPanel.LayoutMethods>();
+
+    public string Version => typeof(Graph).Assembly.GetName().Version?.ToString() ?? "Unknown";
   }
 }
