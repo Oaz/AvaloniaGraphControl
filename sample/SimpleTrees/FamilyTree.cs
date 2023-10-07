@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Avalonia.Media;
 using AvaloniaGraphControl;
@@ -6,32 +7,27 @@ namespace AvaloniaGraphControlSample
 {
   class FamilyMember
   {
-    public FamilyMember(string name, IBrush backgroungColor, string url)
+    private readonly Action onClick;
+
+    public FamilyMember(string name, IBrush backgroungColor, Action onClick)
     {
+      this.onClick = onClick;
       Name = name;
       BackgroundColor = backgroungColor;
-      URL = url;
     }
 
-    public void Navigate()
-    {
-      if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux))
-        System.Diagnostics.Process.Start("xdg-open", URL);
-      else
-        System.Diagnostics.Process.Start(URL);
-    }
+    public void Navigate() => onClick();
     public string Name { get; private set; }
     public IBrush BackgroundColor { get; private set; }
-    public string URL { get; private set; }
   }
 
   class Male : FamilyMember
   {
-    public Male(string name, string url) : base(name, Brushes.LightSkyBlue, url) { }
+    public Male(string name, Action onClick) : base(name, Brushes.LightSkyBlue, onClick) { }
   }
   class Female : FamilyMember
   {
-    public Female(string name, string url) : base(name, Brushes.LightPink, url) { }
+    public Female(string name, Action onClick) : base(name, Brushes.LightPink, onClick) { }
   }
   class Family
   {
@@ -39,21 +35,21 @@ namespace AvaloniaGraphControlSample
 
   class FamilyTree : NamedGraph
   {
-    public FamilyTree() : base("Family Tree")
+    public FamilyTree(Action<string> openUrl) : base("Family Tree")
     {
       Orientation = Orientations.Vertical;
-      var abraham = new Male("Abraham", "https://en.wikipedia.org/wiki/Grampa_Simpson");
-      var mona = new Female("Mona", "https://en.wikipedia.org/wiki/Mona_Simpson_(The_Simpsons)");
-      var homer = new Male("Homer", "https://en.wikipedia.org/wiki/Homer_Simpson");
-      var clancy = new Male("Clancy", "https://en.wikipedia.org/wiki/Simpson_family#Clancy_Bouvier");
-      var jackie = new Female("Jackie", "https://en.wikipedia.org/wiki/Simpson_family#Jacqueline_Bouvier");
-      var marge = new Female("Marge", "https://en.wikipedia.org/wiki/Marge_Simpson");
-      var patty = new Female("Patty", "https://en.wikipedia.org/wiki/Patty_and_Selma");
-      var selma = new Female("Selma", "https://en.wikipedia.org/wiki/Patty_and_Selma");
-      var ling = new Female("Ling", "https://en.wikipedia.org/wiki/Simpson_family#Ling_Bouvier");
-      var bart = new Male("Bart", "https://en.wikipedia.org/wiki/Bart_Simpson");
-      var lisa = new Female("Lisa", "https://en.wikipedia.org/wiki/Lisa_Simpson");
-      var maggie = new Female("Maggie", "https://en.wikipedia.org/wiki/Maggie_Simpson");
+      var abraham = new Male("Abraham", () => openUrl("https://en.wikipedia.org/wiki/Grampa_Simpson"));
+      var mona = new Female("Mona", () => openUrl("https://en.wikipedia.org/wiki/Mona_Simpson_(The_Simpsons)"));
+      var homer = new Male("Homer", () => openUrl("https://en.wikipedia.org/wiki/Homer_Simpson"));
+      var clancy = new Male("Clancy", () => openUrl("https://en.wikipedia.org/wiki/Simpson_family#Clancy_Bouvier"));
+      var jackie = new Female("Jackie", () => openUrl("https://en.wikipedia.org/wiki/Simpson_family#Jacqueline_Bouvier"));
+      var marge = new Female("Marge", () => openUrl("https://en.wikipedia.org/wiki/Marge_Simpson"));
+      var patty = new Female("Patty", () => openUrl("https://en.wikipedia.org/wiki/Patty_and_Selma"));
+      var selma = new Female("Selma", () => openUrl("https://en.wikipedia.org/wiki/Patty_and_Selma"));
+      var ling = new Female("Ling", () => openUrl("https://en.wikipedia.org/wiki/Simpson_family#Ling_Bouvier"));
+      var bart = new Male("Bart", () => openUrl("https://en.wikipedia.org/wiki/Bart_Simpson"));
+      var lisa = new Female("Lisa", () => openUrl("https://en.wikipedia.org/wiki/Lisa_Simpson"));
+      var maggie = new Female("Maggie", () => openUrl("https://en.wikipedia.org/wiki/Maggie_Simpson"));
       var f1 = new Family();
       var f2 = new Family();
       var f3 = new Family();

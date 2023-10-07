@@ -14,6 +14,13 @@ namespace AvaloniaGraphControlSample
 
   class Model
   {
+    private readonly Action<string> openUrl;
+
+    public Model(Action<string> openUrl)
+    {
+      this.openUrl = openUrl;
+    }
+
     public IEnumerable<NamedGraph> SampleGraphs => new NamedGraph[] {
       new SimpleGraph(),
       new SimpleOrderedLayoutGraph(),
@@ -21,7 +28,7 @@ namespace AvaloniaGraphControlSample
       new SimpleWithSubgraph(),
       new SimpleOrderedLayoutWithSubgraph(),
       new ColoredEdges(),
-      new FamilyTree(),
+      new FamilyTree(openUrl),
       new StateMachine(Graph.Orientations.Vertical),
       new StateMachine(Graph.Orientations.Horizontal),
       new StateMachineManyComposites(Graph.Orientations.Vertical),

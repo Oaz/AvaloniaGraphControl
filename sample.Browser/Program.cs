@@ -1,4 +1,5 @@
-﻿using System.Runtime.Versioning;
+﻿using System.Runtime.InteropServices.JavaScript;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Browser;
@@ -12,6 +13,14 @@ internal partial class Program
     .WithInterFont()
     .StartBrowserAppAsync("out");
 
-  public static AppBuilder BuildAvaloniaApp()
-    => AppBuilder.Configure<App>();
+  public static AppBuilder BuildAvaloniaApp() => AppBuilder
+      .Configure<App>()
+      .SetUrlOpener(Interop.OpenUrl);
+}
+
+[SupportedOSPlatform("browser")]
+internal static partial class Interop
+{
+  [JSImport("globalThis.open")]
+  public static partial void OpenUrl(string url);
 }

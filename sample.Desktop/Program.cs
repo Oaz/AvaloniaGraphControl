@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Avalonia;
 
 namespace AvaloniaGraphControlSample.Desktop;
@@ -17,5 +18,14 @@ class Program
     => AppBuilder.Configure<App>()
       .UsePlatformDetect()
       .WithInterFont()
-      .LogToTrace();
+      .LogToTrace()
+      .SetUrlOpener(OpenUrl);
+  
+  private static void OpenUrl(string url)
+  {
+    using var proc = new Process();
+    proc.StartInfo.UseShellExecute = true;
+    proc.StartInfo.FileName = url;
+    proc.Start();
+  }
 }
