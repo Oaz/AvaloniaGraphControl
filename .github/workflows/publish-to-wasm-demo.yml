@@ -19,7 +19,9 @@ jobs:
         dotnet-version: 7.0.x
     - name: Restore workloads
       run: dotnet workload restore
-    - name: Build
+    - name: Build control
+      run: ./build.sh
+    - name: Build sample
       run: dotnet build ./sample.Browser/AvaloniaGraphControlSample.Browser.csproj -c Debug
     - name: Fix permissions
       run: |
