@@ -7,20 +7,40 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaGraphControlSample.MainView"
              x:DataType="local:Model">
-  <DockPanel LastChildFill="True">
-    <WrapPanel DockPanel.Dock="Top">
-      <StackPanel Orientation="Vertical">
-        <TextBlock Text="Select Graph:" Margin="4" />
-        <ComboBox Name="graphs" ItemsSource="{Binding SampleGraphs}" Margin="4" />
-      </StackPanel>
-      <StackPanel Orientation="Vertical">
-        <TextBlock Text="Select Layout Method:" Margin="4" />
-        <ComboBox Name="layoutMethods" ItemsSource="{Binding LayoutMethods}" Margin="4" />
-      </StackPanel>
+  <Grid ColumnDefinitions="*" RowDefinitions="Auto,*" Background="White">
+    <WrapPanel Grid.Row="0">
+      <ToggleButton x:Name="Hamburger" Background="White" VerticalAlignment="Center">
+        <Image Source="Assets/HamburgerIcon.png" Stretch="None" />
+      </ToggleButton>
+      <ComboBox Name="Graphs" ItemsSource="{Binding SampleGraphs}"/>
       <Button Click="ResetDisplay">Reset</Button>
-      <TextBlock Text="{Binding Version}" />
     </WrapPanel>
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+    <StackPanel Grid.Row="1" IsVisible="{Binding IsChecked, ElementName=Hamburger}" Margin="20">
+      <WrapPanel>
+        <TextBlock>Demo of the AvaloniaGraphControl. Version:</TextBlock>
+        <TextBlock Margin="0 5" Text="{Binding Version}"/>
+      </WrapPanel>
+      <WrapPanel>
+        <TextBlock>Select Layout Method:</TextBlock>
+        <ComboBox Name="LayoutMethods" ItemsSource="{Binding LayoutMethods}" />
+      </WrapPanel>
+      <WrapPanel>
+        <TextBlock VerticalAlignment="Center">Project page at:</TextBlock>
+        <Button Classes="hyperlink" Command="{Binding OpenUrl}"
+                CommandParameter="https://github.com/Oaz/AvaloniaGraphControl">
+          https://github.com/Oaz/AvaloniaGraphControl
+        </Button>
+      </WrapPanel>
+      <WrapPanel>
+        <TextBlock VerticalAlignment="Center">Web Assembly demo at:</TextBlock>
+        <Button Classes="hyperlink" Command="{Binding OpenUrl}"
+                CommandParameter="https://oaz.github.io/AvaloniaGraphControl/">
+          https://oaz.github.io/AvaloniaGraphControl/
+        </Button>
+      </WrapPanel>
+    </StackPanel>
+    <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                  IsVisible="{Binding !IsChecked, ElementName=Hamburger}">
       <ZoomBorder x:Name="ZoomBorder" Stretch="Uniform" ZoomSpeed="1.2"
                   ClipToBounds="True" Focusable="True" Background="White"
                   VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -28,8 +48,8 @@
           <PinchGestureRecognizer />
         </ZoomBorder.GestureRecognizers>
         <agc:GraphPanel Background="White"
-                        Graph="{Binding SelectedItem, ElementName=graphs}"
-                        LayoutMethod="{Binding SelectedItem, ElementName=layoutMethods}">
+                        Graph="{Binding SelectedItem, ElementName=Graphs}"
+                        LayoutMethod="{Binding SelectedItem, ElementName=LayoutMethods}">
           <agc:GraphPanel.DataTemplates>
             <DataTemplate DataType="{x:Type local:StandardItem}">
               <agc:TextSticker Text="{Binding Name}"
@@ -82,5 +102,5 @@
         </agc:GraphPanel>
       </ZoomBorder>
     </ScrollViewer>
-  </DockPanel>
+  </Grid>
 </UserControl>

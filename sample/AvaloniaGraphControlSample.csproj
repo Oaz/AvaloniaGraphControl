@@ -24,5 +24,8 @@
   <ItemGroup Condition="'$(UseControlOnNuget)'=='True'">
     <PackageReference Include="AvaloniaGraphControl" Version="*" />
   </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**"/>
+  </ItemGroup>
 
 </Project>

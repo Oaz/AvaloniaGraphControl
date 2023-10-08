@@ -21,6 +21,8 @@ namespace AvaloniaGraphControlSample
       this.openUrl = openUrl;
     }
 
+    public void OpenUrl(string url) => openUrl(url);
+    
     public IEnumerable<NamedGraph> SampleGraphs => new NamedGraph[] {
       new SimpleGraph(),
       new SimpleOrderedLayoutGraph(),
