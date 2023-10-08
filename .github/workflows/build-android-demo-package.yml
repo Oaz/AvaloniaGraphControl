@@ -2,7 +2,9 @@ name: build-android-demo-package
 
 on:
   workflow_dispatch:
-
+  push:
+    branches: [ "ga_setup" ]
+    
 jobs:
 
   build:
