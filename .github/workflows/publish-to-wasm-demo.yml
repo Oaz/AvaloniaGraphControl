@@ -2,8 +2,6 @@ name: publish-to-wasm-demo
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "ga_setup" ]
 
 jobs:
 
