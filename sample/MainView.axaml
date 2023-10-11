@@ -38,6 +38,13 @@
           https://oaz.github.io/AvaloniaGraphControl/
         </Button>
       </WrapPanel>
+      <WrapPanel>
+        <TextBlock VerticalAlignment="Center">Android demo at:</TextBlock>
+        <Button Classes="hyperlink" Command="{Binding OpenUrl}"
+                CommandParameter="https://play.google.com/store/apps/details?id=com.azeau.AvaloniaGraphControlSample">
+          Google Play
+        </Button>
+      </WrapPanel>
     </StackPanel>
     <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
                   IsVisible="{Binding !IsChecked, ElementName=Hamburger}">
