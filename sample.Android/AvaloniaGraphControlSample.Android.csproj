@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <ApplicationTitle>AvaloniaGraphControl Demo</ApplicationTitle>
     <ApplicationId>com.azeau.AvaloniaGraphControlSample</ApplicationId>
-    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationVersion>2</ApplicationVersion>
     <ApplicationDisplayVersion>0.6</ApplicationDisplayVersion>
     <AndroidPackageFormats>aab;apk</AndroidPackageFormats>
     <AndroidEnableProfiledAot>False</AndroidEnableProfiledAot>
