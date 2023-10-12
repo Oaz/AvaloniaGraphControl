@@ -1,0 +1,49 @@
+name: build-android-demo-package
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "ga_setup" ]
+    
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Restore workloads
+      run: dotnet workload restore
+    - name: Build control
+      run: |
+        mkdir -p local_package
+        ./build.sh
+    - name: Publish package
+      run: dotnet publish ./sample.Android/AvaloniaGraphControlSample.Android.csproj -p:UseControlOnNuget=True -c Release -p:PublishTrimmed=true
+    - name: Upload unsigned package as artifact
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: android-unsigned
+        path: sample.Android/bin/Release/net7.0-android/publish
+        retention-days: 0
+    - name: Sign Android
+      uses: noriban/sign-android-release@v3
+      id: sign_app
+      with:
+        releaseDirectory: sample.Android/bin/Release/net7.0-android/publish
+        signingKeyBase64: ${{secrets.KEYSTORE}}
+        alias: ${{secrets.SIGNINGKEY_ALIAS}}
+        keyStorePassword: ${{secrets.KEYSTORE_PASSWORD}}
+        keyPassword: ${{secrets.SIGNINGKEY_PASSWORD}}
+    - name: Upload signed package as artifact
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: android-signed
+        path: ${{steps.sign_app.outputs.signedReleaseFile}}
+        retention-days: 0
+
