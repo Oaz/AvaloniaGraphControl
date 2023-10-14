@@ -5,7 +5,7 @@ A graph layout panel for [AvaloniaUI](https://github.com/AvaloniaUI/Avalonia)
 Each individual graph is displayed through the GraphPanel control included in the assembly
 ```xml
 <Window xmlns:agc="clr-namespace:AvaloniaGraphControl;assembly=AvaloniaGraphControl">
-    <agc:GraphPanel Graph="{Binding MyGraph}" Zoom="1.2" LayoutMethod="SugiyamaScheme" />
+    <agc:GraphPanel Graph="{Binding MyGraph}" LayoutMethod="SugiyamaScheme" />
 </Window>
 ```
 
@@ -19,6 +19,31 @@ The following layout methods are available in MSAGL and can be set in the GraphP
 
 The GraphPanel control and the MSAGL assemblies are bundled in [a nuget package](https://www.nuget.org/packages/AvaloniaGraphControl/).
 The existing MSAGL nuget packages are dedicated to the .NET Framework and do not include any netstandard assembly.
+
+### MVVM
+
+The GraphPanel control leverages the [MVVM pattern used by AvaloniaUI](https://docs.avaloniaui.net/docs/next/concepts/the-mvvm-pattern/).
+Each node of the graph view can be customized according to the underlying view model in the graph definition.
+
+```xml
+<Window xmlns:agc="clr-namespace:AvaloniaGraphControl;assembly=AvaloniaGraphControl">
+    <agc:GraphPanel Graph="{Binding MyGraph}" LayoutMethod="SugiyamaScheme" />
+      <agc:GraphPanel.DataTemplates>
+        <DataTemplate DataType="{x:Type local:StandardItem}">
+          <agc:TextSticker Text="{Binding Name}" Shape="Ellipse" Padding="30,10" />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type local:InteractiveItem}">
+          <ToggleButton Content="{Binding Name}" Padding="20,5" />
+        </DataTemplate>
+      </agc:GraphPanel.DataTemplates>
+    </agc:GraphPanel>
+</Window>
+```
+
+### Cross-platform
+
+As shown in the demo, this graph panel can be used in cross-platform AvaloniaUI applications.
+It was successfully tested on Linux Desktop, Windows Desktop, Android and Browser (web assembly) environments.
 
 ## Example of graph definition
 
