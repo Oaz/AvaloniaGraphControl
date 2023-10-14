@@ -19,20 +19,15 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>Release</PackageReleaseNotes>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludePrivateDependenciesInNupkg</TargetsForTfmSpecificBuildOutput>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="../automatic-graph-layout/GraphLayout/Drawing/AutomaticGraphLayout.Drawing.csproj" PrivateAssets="all" />
     <ProjectReference Include="../automatic-graph-layout/GraphLayout/MSAGL/AutomaticGraphLayout.csproj" PrivateAssets="all" />
+    <None Include="..\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
-
-  <PropertyGroup>
-    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludePrivateDependenciesInNupkg</TargetsForTfmSpecificBuildOutput>
-  </PropertyGroup>
   <Target Name="IncludePrivateDependenciesInNupkg">
     <ItemGroup>
       <BuildOutputInPackage Include="$(OutputPath)AutomaticGraphLayout.dll" />
