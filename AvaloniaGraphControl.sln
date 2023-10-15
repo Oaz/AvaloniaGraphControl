@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaGraphControlSample.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaGraphControlSample.Android", "sample.Android\AvaloniaGraphControlSample.Android.csproj", "{C4FCFFC7-CFFC-4CF9-8711-553DE1137A87}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaGraphControlSample.Embedded", "sample.Embedded\AvaloniaGraphControlSample.Embedded.csproj", "{15F4757B-388D-4CC6-8678-993D84CD4CF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -124,6 +126,18 @@ Global
 		{C4FCFFC7-CFFC-4CF9-8711-553DE1137A87}.Release|x64.Build.0 = Release|Any CPU
 		{C4FCFFC7-CFFC-4CF9-8711-553DE1137A87}.Release|x86.ActiveCfg = Release|Any CPU
 		{C4FCFFC7-CFFC-4CF9-8711-553DE1137A87}.Release|x86.Build.0 = Release|Any CPU
+		{15F4757B-388D-4CC6-8678-993D84CD4CF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15F4757B-388D-4CC6-8678-993D84CD4CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15F4757B-388D-4CC6-8678-993D84CD4CF2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{15F4757B-388D-4CC6-8678-993D84CD4CF2}.Debug|x64.Build.0 = Debug|Any CPU
+		{15F4757B-388D-4CC6-8678-993D84CD4CF2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{15F4757B-388D-4CC6-8678-993D84CD4CF2}.Debug|x86.Build.0 = Debug|Any CPU
+		{15F4757B-388D-4CC6-8678-993D84CD4CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15F4757B-388D-4CC6-8678-993D84CD4CF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15F4757B-388D-4CC6-8678-993D84CD4CF2}.Release|x64.ActiveCfg = Release|Any CPU
+		{15F4757B-388D-4CC6-8678-993D84CD4CF2}.Release|x64.Build.0 = Release|Any CPU
+		{15F4757B-388D-4CC6-8678-993D84CD4CF2}.Release|x86.ActiveCfg = Release|Any CPU
+		{15F4757B-388D-4CC6-8678-993D84CD4CF2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
