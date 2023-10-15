@@ -2,7 +2,9 @@ name: build-ios-demo-package
 
 on:
   workflow_dispatch:
-    
+  push:
+    branches: [ "ios" ]
+
 jobs:
 
   build:
