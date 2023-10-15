@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>AvaloniaGraphControlSample</string>
 	<key>CFBundleIdentifier</key>
-	<string>companyName.AvaloniaGraphControlSample</string>
+	<string>com.azeau.AvaloniaGraphControlSample</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -13,7 +13,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
-	<string>10.0</string>
+	<string>11.0</string>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>
