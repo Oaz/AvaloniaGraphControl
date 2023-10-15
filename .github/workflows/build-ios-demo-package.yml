@@ -24,7 +24,7 @@ jobs:
         mkdir -p local_package
         ./build.sh
     - name: Build demo
-      run: dotnet build ./sample.iOS/AvaloniaGraphControlSample.iOS.csproj -c Release -p:PublishTrimmed=False
+      run: dotnet build ./sample.iOS/AvaloniaGraphControlSample.iOS.csproj -c Release -p:MtouchLink=None
     - name: Upload build result
       uses: actions/upload-artifact@v3.1.3
       with:
