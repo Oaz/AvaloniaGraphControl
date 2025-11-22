@@ -17,9 +17,6 @@ The following layout methods are available in MSAGL and can be set in the GraphP
 * Ranking
 * IncrementalLayout
 
-The GraphPanel control and the MSAGL assemblies are bundled in [a nuget package](https://www.nuget.org/packages/AvaloniaGraphControl/).
-The existing MSAGL nuget packages are dedicated to the .NET Framework and do not include any netstandard assembly.
-
 ### MVVM
 
 The GraphPanel control leverages the [MVVM pattern used by AvaloniaUI](https://docs.avaloniaui.net/docs/next/concepts/the-mvvm-pattern/).

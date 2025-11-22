@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <UseControlOnNuget>False</UseControlOnNuget>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.Controls.PanAndZoom" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="PanAndZoom" Version="11.3.6" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)"/>
   </ItemGroup>

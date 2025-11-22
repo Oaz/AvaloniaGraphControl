@@ -1,0 +1,23 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="build.sh" />
+    <File Path="clean_build.sh" />
+    <File Path="Directory.Build.props" />
+    <File Path="global.json" />
+    <File Path="NuGet.Config" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="sample.Android/AvaloniaGraphControlSample.Android.csproj" />
+  <Project Path="sample.Browser/AvaloniaGraphControlSample.Browser.csproj" />
+  <Project Path="sample.Desktop/AvaloniaGraphControlSample.Desktop.csproj" />
+  <Project Path="sample.Embedded/AvaloniaGraphControlSample.Embedded.csproj" />
+  <Project Path="sample/AvaloniaGraphControlSample.csproj" />
+  <Project Path="src/AvaloniaGraphControl.csproj" />
+</Solution>

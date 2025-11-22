@@ -1,13 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0-android</TargetFramework>
-    <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+    <TargetFramework>net10.0-android</TargetFramework>
     <Nullable>enable</Nullable>
     <ApplicationTitle>AvaloniaGraphControl Demo</ApplicationTitle>
     <ApplicationId>com.azeau.AvaloniaGraphControlSample</ApplicationId>
     <ApplicationVersion>2</ApplicationVersion>
-    <ApplicationDisplayVersion>0.6</ApplicationDisplayVersion>
+    <ApplicationDisplayVersion>0.7</ApplicationDisplayVersion>
     <AndroidPackageFormats>aab;apk</AndroidPackageFormats>
     <AndroidEnableProfiledAot>False</AndroidEnableProfiledAot>
     <PublishTrimmed>true</PublishTrimmed>
@@ -20,11 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia.Android" Version="$(AvaloniaVersion)"/>
-    <PackageReference Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.1"/>
+    <PackageReference Include="Avalonia.Android" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.17" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\sample\AvaloniaGraphControlSample.csproj"/>
+    <ProjectReference Include="..\sample\AvaloniaGraphControlSample.csproj" />
   </ItemGroup>
 </Project>
